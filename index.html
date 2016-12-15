@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+  <title> // </title>
+  <script src="RGraph/libraries/RGraph.common.core.js"></script>
+  <script src="RGraph/libraries/RGraph.common.dynamic.js"></script>
+  <script src="RGraph/libraries/RGraph.common.tooltips.js"></script>
+  <script src="RGraph/libraries/RGraph.bar.js"></script>
+  <script src="RGraph/libraries/RGraph.hbar.js"></script>
+  <script src="source.js" type="text/javascript"></script>
+</head>
+<body>
+  <h1> // </h1>
+  <input type="file" id="fileinput">
+  <p id="content"> hi1 </p>
+  <p id="content1"> hi2 </p>
+  <p id="content2"> canvas overlap initial and after file change </p>
+  <canvas id="canvas" width="600" height="300"></canvas>
+  <button id="drawButton" onclick="drawButton()"> Unsorted Data </button>
+  <button onclick="sortButton()"> Sorted Data </button>
+  <button onclick="RGraph.Reset(document.getElementById('canvas'))">Reset Canvas</button>
+</body>
+</html>
