@@ -1,49 +1,52 @@
 "use strict";
 var data = {};
-var dataNums = [];
+var dataNumbers = [];
 var dataLabels = [];
 var sortedDatalabels = [];
 var smallLetters = getAlphabets('a', 'z');
 
 window.onload = function(){
   document.getElementById('fileinput').addEventListener('change', readFile);
-  document.getElementById('canvas').innerHTML = drawBar(dataNums, smallLetters); //Display empty chart while webpage onload
+  document.getElementById('canvas').innerHTML = drawBar(dataNumbers, smallLetters); //Display empty chart while webpage onload
 };
 
 function drawBar (data, labels){
-/* This function will get two arrays as parameters and draw a bar graph using RGraph. */
+/* This function will get two arrays as parameters, clear the canvase, and draw a bar graph with the parameters using RGraph. */
   RGraph.Reset(document.getElementById('canvas')); //Reset canvas to avoid overlapping
     var bar = new RGraph.Bar({
         id: 'canvas',
         data: data,
         options: {
             textAccessible: true,
+            textFont: 'Times',
             labels: labels,
             tooltips: labels,
             tooltipsEvent: 'onmousemove',
-            gutterLeft: 75,
-            gutterRight: 5,
-            gutterTop: 20,
+            gutterLeft: 90,
+            gutterRight: 1,
+            gutterTop: 30,
             backgroundGridWidth: 1.2,
-            textSize: 11.5,
+            textSize: 13.5,
             labelsAbove: true,
             labelsAboveOffset: 2,
-            title: "Number of Occurrences of Alphabetical Character",
+            title: "Frequency Analysis of Alphabetical Character",
+            titleSize: 15,
             titleY: -22,
             titleBold: true,
             titleXaxis: "Character",
             titleXaxisY: 510,
             titleYaxis: "Frequency",
             titleYaxisX: 10,
-            bevel: true,
+            ylabelsCount: 10,
+            labelsAboveSize: 10,
         }
     }).draw()
 }
 
 function readFile(file){
-  /* This function will first read file and alert user whether is file input loaded successfully. While
+  /* This function will first read file and alert user whether file input is loaded successfully. While
    * reader onload after file input successfully, it will count the occurrence of each letter within
-   * the file content and store it within a dictionary and arrays, which are used to display graph
+   * the file content and store it within a dictionary and arrays, which will be used to display graph.
    */
   var f = file.target.files[0]; //The first of the FileList Object
   var reader = new FileReader();
@@ -52,7 +55,7 @@ function readFile(file){
     reader.onload = function(e){
       RGraph.Reset(document.getElementById('canvas')); //Reset canvas to avoid overlapping
       var content = e.target.result; //Text file content
-      dataNums = [];  //Reset array
+      dataNumbers = [];  //Reset array
       dataLabels = []; //Reset array
 
       for (var i = 0; i < smallLetters.length; i++) {
@@ -61,12 +64,12 @@ function readFile(file){
         if(occurrence == 0){
           continue;
         } else {
-          dataNums.push(occurrence);
+          dataNumbers.push(occurrence);
           dataLabels.push(smallLetters[i]);
         }
       }
       alert("File loaded successfully");
-      drawBar(dataNums, dataLabels);
+      drawBar(dataNumbers, dataLabels);
     }
     reader.readAsText(f, "UTF-8");
   } else {
@@ -75,13 +78,13 @@ function readFile(file){
 }
 
 function drawButton() {
-  /* This function reset canvas and call function of drawBar() */
-  drawBar(dataNums, dataLabels);
+  /* This function will call drawBar function with arguments passed in. */
+  drawBar(dataNumbers, dataLabels);
 }
 
 function sortButton() {
-  /* This function will store sorted data numbers (number more than zero) within an array and get the
-   * correct letter of each number into an array before passing it into 'drawBar' function
+  /* This function will store sorted values (value more than zero) within an array and get the
+   * correct letter of each number into an array before passing them into 'drawBar' function.
    */
   var sortedDataNumbers = sort(data);
   var sortedDataNumbers1 = [];
@@ -100,45 +103,24 @@ function sortButton() {
 }
 
 Object.prototype.getkey = function(value) {
-  /* This prototype property receives a value as parameter and return the correct key from object. */
+  /* This prototype property receives a value as parameter and return the correct letter (that holds the similar value) from object. */
   for (var i = 0; i < smallLetters.length; i++) {
     if (this[smallLetters[i]] == value) {   //Loop throught object to find the correct key (letter) with the same value
       for (var j = 0; j <= sortedDatalabels.length; j++) {
         if (j == sortedDatalabels.length){
           return smallLetters[i]; //Return letter if only the letter has not been used
         } else if (smallLetters[i] == sortedDatalabels[j]) {
-          break; //Break the loop if letter is used before the next iteration of variable 'i'
+          break; //Break the loop if letter is used
         } else if (smallLetters[i] != sortedDatalabels[j]) { //Condition to ensure no similar letter within array of sortedDatalabels
-          continue; //Continue if letter is not found within sortedDatalabels
+          continue; //Continue to next letter if letter is not found within sortedDatalabels
         }
       }
     }
   }
 };
 
-/*
-Object.prototype.getkey = function(value) {
-  /* This prototype property receives a value as parameter and return key that have the similar value
-   * from the object.
-   *
-  var j = 0;
-
-  for (var i = 0; i < smallLetters.length; i++) {
-    if (this[smallLetters[i]] == value) {   //Loop throught object to find the correct key with the same value
-      for (j; j <= sortedDatalabels.length; j++) {
-        if (smallLetters[i] == sortedDatalabels[j]) { //Condition designed to avoid reappearance of keys with similar occurence
-          j++;
-          break;
-        } else {
-          return smallLetters[i]; //Return key that has not been recorded in 'sortedDatalabels'
-        }
-      }
-    }
-  }
-};*/
-
 String.prototype.count = function(letter) {
-  /* This prototype property receives a letter as parameter and counts the occurence of the letter
+  /* This prototype property receives a letter as parameter and counts the number of occurence of the letter
    * within a string and return the count.
    */
   var count = 0;
@@ -151,13 +133,12 @@ String.prototype.count = function(letter) {
 };
 
 function sort(dict) {
-  /* This function will get a dictionary as parameter and stores the values of dictionary into an array
-   * before sorted out the array from largest to smallest and return it.
+  /* This function will receive a dictionary as parameter and store the values of dictionary into an array
+   * before sorted out the array in descending order and return it.
    */
-  var sortedValues1 = [];
-	var sortedValues2 = [];
+  var sortedValues1 = [], sortedValues2 = [];
   for (var i = 0; i < smallLetters.length ; i++){
-      sortedValues1.push(dict[smallLetters[i]]); //Storing dictionary values into an array
+      sortedValues1.push(dict[smallLetters[i]]); //Store dictionary values into an array
   }
   sortedValues1.sort(function(a, b){return b-a}); //Sort number in descending order
   return sortedValues1;
@@ -167,7 +148,7 @@ function getAlphabets(charA, charZ) {
   /* This function will get two letters as parameters and return sequence of Unicode values from
    * the first parameter to the second parameter based on the UTF-8 reference.
    */
-    var alphabets = [], i = charA.charCodeAt(0), j = charZ.charCodeAt(0); //i: 97 j:122
+    var alphabets = [], i = charA.charCodeAt(0), j = charZ.charCodeAt(0);
     for (; i <= j; ++i) {
         alphabets.push(String.fromCharCode(i));
     }

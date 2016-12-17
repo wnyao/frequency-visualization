@@ -17,7 +17,7 @@
 
     /**
     * The bar chart constructor
-    * 
+    *
     * @param object canvas The canvas object
     * @param array  data   The chart data
     */
@@ -157,7 +157,7 @@
             'chart.title.y':                null,
             'chart.title.halign':           null,
             'chart.title.valign':           null,
-            'chart.colors':                 ['red','#0f0','blue','pink','orange','cyan','black','white','green','magenta'],
+            'chart.colors':                 ['#5a7b7b','#0f0','blue','pink','orange','cyan','black','white','green','magenta'],
             'chart.colors.sequential':      false,
             'chart.colors.reverse':         false,
             'chart.grouping':               'grouped',
@@ -178,7 +178,7 @@
             'chart.tooltips.css.class':     'RGraph_tooltip',
             'chart.tooltips.event':         'onclick',
             'chart.tooltips.highlight':     true,
-            'chart.tooltips.hotspot.xonly': false,  
+            'chart.tooltips.hotspot.xonly': false,
             'chart.highlight.stroke':       'rgba(0,0,0,0)',
             'chart.highlight.fill':         'rgba(255,255,255,0.7)',
             'chart.key':                    null,
@@ -336,8 +336,8 @@
             doc  = document,
             ma   = Math
 
-        
-        
+
+
         /**
         * "Decorate" the object with the generic effects if the effects library has been included
         */
@@ -351,7 +351,7 @@
 
         /**
         * A setter
-        * 
+        *
         * @param name  string The name of the property to set
         * @param value mixed  The value of the property
         */
@@ -390,21 +390,21 @@
             while(name.match(/([A-Z])/)) {
                 name = name.replace(/([A-Z])/, '.' + RegExp.$1.toLowerCase());
             }
-            
-            
+
+
             // BC accommodation
             if (name === 'chart.xlabels.offset') {
                 name = 'chart.labels.offsety';
             }
-    
+
             if (name == 'chart.labels.abovebar') {
                 name = 'chart.labels.above';
             }
-            
+
             if (name == 'chart.strokestyle') {
                 name = 'chart.strokecolor';
             }
-            
+
             /**
             * Check for xaxispos
             */
@@ -413,7 +413,7 @@
                     alert('[BAR] (' + this.id + ') chart.xaxispos should be top, center or bottom. Tried to set it to: ' + value + ' Changing it to center');
                     value = 'center';
                 }
-                
+
                 if (value == 'top') {
                     for (var i=0; i<this.data.length; ++i) {
                         if (typeof(this.data[i]) == 'number' && this.data[i] > 0) {
@@ -422,7 +422,7 @@
                     }
                 }
             }
-            
+
             /**
             * lineWidth doesn't appear to like a zero setting
             */
@@ -434,9 +434,9 @@
 
 
 
-    
+
             prop[name] = value;
-    
+
             return this;
         };
 
@@ -445,7 +445,7 @@
 
         /**
         * A getter
-        * 
+        *
         * @param name  string The name of the property to get
         */
         this.get =
@@ -462,7 +462,7 @@
             while(name.match(/([A-Z])/)) {
                 name = name.replace(/([A-Z])/, '.' + RegExp.$1.toLowerCase());
             }
-    
+
             return prop[name];
         };
 
@@ -484,9 +484,9 @@
             * Fire the onbeforedraw event
             */
             RG.FireCustomEvent(this, 'onbeforedraw');
-    
-    
-    
+
+
+
             //
             // If the chart is 3d then angle it it
             //
@@ -505,13 +505,13 @@
             */
             if (!this.colorsParsed) {
                 this.parseColors();
-                
+
                 // Don't want to do this again
                 this.colorsParsed = true;
             }
-    
-    
-            
+
+
+
             /**
             * This is new in May 2011 and facilitates indiviual gutter settings,
             * eg chart.gutter.left
@@ -520,9 +520,9 @@
             this.gutterRight  = prop['chart.gutter.right'];
             this.gutterTop    = prop['chart.gutter.top'];
             this.gutterBottom = prop['chart.gutter.bottom'];
-    
+
             // Cache this in a class variable as it's used rather a lot
-    
+
             /**
             * Check for tooltips and alert the user that they're not supported
             * with pyramid charts
@@ -531,17 +531,17 @@
                 && typeof(prop['chart.tooltips']) == 'object'
                 && prop['chart.tooltips']
                 && prop['chart.tooltips'].length > 0) {
-    
+
                 alert('[BAR] (' + this.id + ') Sorry, tooltips are not supported with dot or pyramid charts');
             }
-    
+
             /**
             * Stop the coords arrays from growing uncontrollably
             */
             this.coords     = [];
             this.coords2    = [];
             this.coordsText = [];
-    
+
             /**
             * Work out a few things. They need to be here because they depend on things you can change before you
             * call Draw() but after you instantiate the object
@@ -550,16 +550,16 @@
             this.grapharea      = ca.height - this.gutterTop - this.gutterBottom;
             this.halfgrapharea  = this.grapharea / 2;
             this.halfTextHeight = prop['chart.text.size'] / 2;
-            
 
-    
+
+
 
 
             // Now draw the background on to the main canvas
             RG.background.Draw(this);
 
-    
-    
+
+
 
             //If it's a sketch chart variant, draw the axes first
             //if (prop['chart.variant'] == 'sketch') {
@@ -569,24 +569,24 @@
                 this.drawbars();
                 this.drawAxes();
             //}
-    
+
             this.DrawLabels();
 
-            
+
             /**
             * Draw the bevel if required
             */
             if (prop['chart.bevel'] || prop['chart.bevelled']) {
                 this.DrawBevel();
             }
-    
-    
+
+
             // Draw the key if necessary
             if (prop['chart.key'] && prop['chart.key'].length) {
                 RG.DrawKey(this, prop['chart.key'], prop['chart.colors']);
             }
-            
-            
+
+
             /**
             * Setup the context menu if required
             */
@@ -595,8 +595,8 @@
             }
 
 
-    
-    
+
+
             /**
             * Draw errorbars
             */
@@ -605,30 +605,30 @@
             }
 
 
-    
-    
+
+
             /**
             * Draw "in graph" labels
             */
             if (prop['chart.labels.ingraph']) {
                 RG.DrawInGraphLabels(this);
             }
-    
-            
+
+
             /**
             * This function enables resizing
             */
             if (prop['chart.resizable']) {
                 RG.AllowResizing(this);
             }
-    
-    
+
+
             /**
             * This installs the event listeners
             */
             RG.InstallEventListeners(this);
-            
-            
+
+
             /**
             * Fire the onfirstdraw event
             */
@@ -643,22 +643,22 @@
             * Fire the RGraph ondraw event
             */
             RG.fireCustomEvent(this, 'ondraw');
-            
+
             return this;
         };
-        
-        
-        
+
+
+
         /**
         * Used in chaining. Runs a function there and then - not waiting for
         * the events to fire (eg the onbeforedraw event)
-        * 
+        *
         * @param function func The function to execute
         */
         this.exec = function (func)
         {
             func(this);
-            
+
             return this;
         };
 
@@ -674,21 +674,21 @@
             if (prop['chart.noaxes']) {
                 return;
             }
-    
+
             var xaxispos = prop['chart.xaxispos'];
             var yaxispos = prop['chart.yaxispos'];
             var isSketch = prop['chart.variant'] == 'sketch';
-    
+
             co.beginPath();
             co.strokeStyle = prop['chart.axis.color'];
             co.lineWidth   = prop['chart.axis.linewidth'] + 0.001;
-    
+
 
             if (RG.ISSAFARI == -1) {
                 co.lineCap = 'square';
             }
-    
-    
+
+
             // Draw the Y axis
             if (prop['chart.noyaxis'] == false) {
                 if (yaxispos == 'right') {
@@ -699,7 +699,7 @@
                     co.lineTo(this.gutterLeft - (isSketch ? 1 : 0), ca.height - this.gutterBottom + (isSketch ? 5 : 0));
                 }
             }
-            
+
             // Draw the X axis
             if (prop['chart.noxaxis'] == false) {
                 if (xaxispos == 'center') {
@@ -720,17 +720,17 @@
 
                 }
             }
-    
+
             var numYTicks = prop['chart.numyticks'];
-    
+
             //
             // DRAW THE Y TICKMARKS
             //
             if (prop['chart.noyaxis'] == false && !isSketch) {
-                
+
                 var yTickGap = (ca.height - this.gutterTop - this.gutterBottom) / numYTicks;
                 var xpos     = yaxispos == 'left' ? this.gutterLeft : ca.width - this.gutterRight;
-    
+
                 if (this.properties['chart.numyticks'] > 0) {
                     for (y=this.gutterTop;
                          xaxispos == 'center' ? y <= (ca.height - this.gutterBottom) : y < (ca.height - this.gutterBottom + (xaxispos == 'top' ? 1 : 0));
@@ -739,16 +739,16 @@
                         if (xaxispos == 'center' && y == (this.gutterTop + (this.grapharea / 2))) {
                             continue;
                         }
-                        
+
                         // X axis at the top
                         if (xaxispos == 'top' && y == this.gutterTop) {
                             continue;
                         }
-    
+
                         co.moveTo(xpos + (yaxispos == 'left' ? 0 : 0), ma.round(y));
                         co.lineTo(xpos + (yaxispos == 'left' ? -3 : 3), ma.round(y));
                     }
-                    
+
                     //
                     // If the X axis is offset (ie not at the bottom when xaxispos
                     // is set to bottom) - draw an extra tick
@@ -758,7 +758,7 @@
                         co.lineTo(xpos + (yaxispos == 'left' ? -3 : 3), ma.round(ca.height - prop['chart.gutter.bottom']));
                     }
                 }
-    
+
                 /**
                 * If the X axis is not being shown, draw an extra tick
                 */
@@ -775,17 +775,17 @@
                     }
                 }
             }
-    
-    
+
+
             // Draw the X tickmarks
             if (prop['chart.noxaxis'] == false && !isSketch) {
-    
+
                 if (typeof(prop['chart.numxticks']) == 'number') {
                     var xTickGap = (ca.width - this.gutterLeft - this.gutterRight) / prop['chart.numxticks'];
                 } else {
                     var xTickGap = (ca.width - this.gutterLeft - this.gutterRight) / this.data.length;
                 }
-    
+
                 if (xaxispos == 'bottom') {
                     yStart   = prop['chart.ymin'] < 0 ? this.getYCoord(0) - 3 : this.getYCoord(0);
                     yEnd     = this.getYCoord(0) + 3;
@@ -796,27 +796,27 @@
                     yStart = ((ca.height - this.gutterTop - this.gutterBottom) / 2) + this.gutterTop + 3;
                     yEnd   = ((ca.height - this.gutterTop - this.gutterBottom) / 2) + this.gutterTop - 3;
                 }
-                
+
                 //yStart = yStart;
                 //yEnd   = yEnd;
-                
+
                 //////////////// X TICKS ////////////////
                 var noEndXTick = prop['chart.noendxtick'];
-    
+
                 for (x=this.gutterLeft + (yaxispos == 'left' ? xTickGap : 0),len=(ca.width - this.gutterRight + (yaxispos == 'left' ? 5 : 0)); x<len; x+=xTickGap) {
-    
+
                     if (yaxispos == 'left' && !noEndXTick && x > this.gutterLeft) {
                         co.moveTo(ma.round(x), yStart);
                         co.lineTo(ma.round(x), yEnd);
-                    
+
                     } else if (yaxispos == 'left' && noEndXTick && x > this.gutterLeft && x < (ca.width - this.gutterRight) ) {
                         co.moveTo(ma.round(x), yStart);
                         co.lineTo(ma.round(x), yEnd);
-                    
+
                     } else if (yaxispos == 'right' && x < (ca.width - this.gutterRight) && !noEndXTick) {
                         co.moveTo(ma.round(x), yStart);
                         co.lineTo(ma.round(x), yEnd);
-                    
+
                     } else if (yaxispos == 'right' && x < (ca.width - this.gutterRight) && x > (this.gutterLeft) && noEndXTick) {
                         co.moveTo(ma.round(x), yStart);
                         co.lineTo(ma.round(x), yEnd);
@@ -829,10 +829,10 @@
                         co.lineTo(Math.round(this.gutterLeft), yEnd);
                     }
                 }
-        
+
                 //////////////// X TICKS ////////////////
             }
-    
+
             /**
             * If the Y axis is not being shown, draw an extra tick
             */
@@ -845,7 +845,7 @@
                     co.lineTo(ma.round(this.gutterLeft), ca.height - this.gutterBottom + 3);
                 }
             }
-    
+
             co.stroke();
         };
 
@@ -861,7 +861,7 @@
             co.lineWidth   = prop['chart.linewidth'];
             co.strokeStyle = prop['chart.strokecolor'];
             co.fillStyle   = prop['chart.colors'][0];
-            
+
             var prevX      = 0,
                 prevY      = 0,
                 decimals   = prop['chart.scale.decimals'];
@@ -898,22 +898,22 @@
                 var errorbars = prop['chart.errorbars'];
 
                 if (typeof errorbars === 'number') {
-    
+
                     var value = errorbars;
-    
+
                     prop['chart.errorbars'] = [];
-                    
+
                     for (var i=0; i<this.data.length; ++i) {
                         if (typeof this.data[i] === 'number') {
                             prop['chart.errorbars'].push([value, null]);
-                        
+
                         } else if (typeof this.data[i] === 'object' && !RG.isNull(this.data[i])) {
                             for (var j=0; j<this.data[i].length; ++j) {
                                 prop['chart.errorbars'].push([value, null]);
                             }
                         }
                     }
-                    
+
                     errorbars = prop['chart.errorbars'];
                 }
 
@@ -927,13 +927,13 @@
                 for (i=0; i<this.data.length; ++i) {
                     if (typeof(this.data[i]) == 'object') {
                         var value = prop['chart.grouping'] === 'grouped' ? Number(RG.arrayMax(this.data[i], true)) : Number(RG.array_sum(this.data[i]));
-    
+
                     } else {
                         var value = Number(this.data[i]);
                     }
 
                     this.max = ma.max(ma.abs(this.max), ma.abs(value) +
-                    
+
                         Number(
                             (
                                    typeof prop['chart.errorbars'] === 'object'
@@ -965,23 +965,23 @@
 
                 this.max = this.scale2.max;
             }
-            
+
             /**
             * if the chart is adjustable fix the scale so that it doesn't change.
             */
             if (prop['chart.adjustable'] && !prop['chart.ymax']) {
                 this.Set('chart.ymax', this.scale2.max);
             }
-    
+
             /**
             * Draw horizontal bars here
             */
             if (prop['chart.background.hbars'] && prop['chart.background.hbars'].length > 0) {
                 RGraph.DrawBars(this);
             }
-    
+
             var variant = prop['chart.variant'];
-            
+
             /**
             * Draw the 3D axes is necessary
             */
@@ -992,7 +992,7 @@
             /**
             * Get the variant once, and draw the bars, be they regular, stacked or grouped
             */
-            
+
             // Get these variables outside of the loop
             var xaxispos      = prop['chart.xaxispos'],
                 width         = (ca.width - this.gutterLeft - this.gutterRight ) / this.data.length,
@@ -1006,14 +1006,14 @@
                 strokeStyle   = prop['chart.strokecolor'],
                 colors        = prop['chart.colors'],
                 sequentialColorIndex = 0
-            
+
             var height;
-    
+
             for (i=0,len=this.data.length; i<len; i+=1) {
-    
-    
-    
-    
+
+
+
+
 
                 // Work out the height
                 //The width is up outside the loop
@@ -1029,7 +1029,7 @@
 
 
 
-    
+
                 var x = (i * width) + this.gutterLeft;
                 var y = xaxispos == 'center' ? ((ca.height - this.gutterTop - this.gutterBottom) / 2) + this.gutterTop - height
                                              : ca.height - height - this.gutterBottom;
@@ -1038,8 +1038,8 @@
                 if (xaxispos == 'top') {
                     y = this.gutterTop + ma.abs(height);
                 }
-    
-    
+
+
                 // Account for negative lengths - Some browsers don't like a negative value
                 if (height < 0) {
                     y += height;
@@ -1079,18 +1079,18 @@
                         }
 
                         var barWidth = width - (2 * hmargin);
-                        
+
                         /**
                         * Check for a negative bar width
                         */
                         if (barWidth < 0) {
                             alert('[RGRAPH] Warning: you have a negative bar width. This may be caused by the chart.hmargin being too high or the width of the canvas not being sufficient.');
                         }
-    
+
                         // Set the fill color
                         co.strokeStyle = strokeStyle;
                         co.fillStyle = colors[0];
-                        
+
                         /**
                         * Sequential colors
                         */
@@ -1099,26 +1099,26 @@
                         }
 
                         if (variant == 'sketch') {
-    
+
                             co.lineCap = 'round';
-                            
+
                             var sketchOffset = 3;
-    
+
                             co.beginPath();
-    
+
                             co.strokeStyle = colors[0];
-    
+
                             /**
                             * Sequential colors
                             */
                             if (prop['chart.colors.sequential']) {
                                 co.strokeStyle = colors[i];
                             }
-    
+
                             // Left side
                             co.moveTo(x + hmargin + 2, y + height - 2);
                             co.lineTo(x + hmargin -    1, y - 4);
-    
+
                             // The top
                             co.moveTo(x + hmargin - 3, y + -2 + (this.data[i] < 0 ? height : 0));
                             co.bezierCurveTo(
@@ -1127,28 +1127,28 @@
                                              x + ((hmargin + width) * 0.66),
                                              y + 5 + (this.data[i] < 0 ? height - 10 : 0),x + hmargin + width + -1, y + 0 + (this.data[i] < 0 ? height : 0)
                                             );
-    
-    
+
+
                             // The right side
                             co.moveTo(x + hmargin + width - 5, y  - 5);
                             co.lineTo(x + hmargin + width - 3, y + height - 3);
-    
+
                             if (prop['chart.variant.sketch.verticals']) {
                                 for (var r=0.2; r<=0.8; r+=0.2) {
                                     co.moveTo(x + hmargin + width + (r > 0.4 ? -1 : 3) - (r * width),y - 1);
                                     co.lineTo(x + hmargin + width - (r > 0.4 ? 1 : -1) - (r * width), y + height + (r == 0.2 ? 1 : -2));
                                 }
                             }
-    
+
                             co.stroke();
-    
+
                         // Regular bar
                         } else if (variant == 'bar' || variant == '3d' || variant == 'glass' || variant == 'bevel') {
 
                             if (RGraph.ISOLD && shadow) {
                                 this.DrawIEShadow([x + hmargin, y, barWidth, height]);
                             }
-                            
+
                             if (variant == 'glass') {
                                 RGraph.filledCurvyRect(co, x + hmargin, y, barWidth, height, 3, this.data[i] > 0, this.data[i] > 0, this.data[i] < 0, this.data[i] < 0);
                                 RGraph.strokedCurvyRect(co, x + hmargin, y, barWidth, height, 3, this.data[i] > 0, this.data[i] > 0, this.data[i] < 0, this.data[i] < 0);
@@ -1159,22 +1159,22 @@
                                 co.beginPath();
                                 co.rect(x + hmargin, y, barWidth, height);
                                 co.fill();
-                                
+
                                 // Turn the shadow off so that the stroke doesn't cast any "extra" shadow
                                 // that would show inside the bar
                                 RG.NoShadow(this);
-                                
+
                                 co.beginPath();
                                 co.rect(x + hmargin, y, barWidth, height);
                                 co.stroke();
                             }
-    
+
                             // 3D effect
                             if (variant == '3d') {
 
                                 var prevStrokeStyle = co.strokeStyle;
                                 var prevFillStyle   = co.fillStyle;
-    
+
                                 // Draw the top (if the value is positive - otherwise there's no point)
                                 if (this.data[i] >= 0) {
                                     co.beginPath();
@@ -1187,7 +1187,7 @@
                                     co.stroke();
                                     co.fill();
                                 }
-    
+
                                 // Draw the right hand side
                                 co.beginPath();
                                     co.moveTo(x + hmargin + barWidth, y);
@@ -1197,18 +1197,18 @@
                                             this.getYCoord(0) : (
                                                   this.data[i] < 0 && (y - prop['chart.variant.threed.offsety'])
                                                 < (this.gutterTop + this.halfgrapharea)
-                                                
+
                                                 ?
-                                                
+
                                                 (this.gutterTop + this.halfgrapharea)
-                                                
+
                                                 : (y - prop['chart.variant.threed.offsety']))
                                     );
 
 co.lineTo(
     x + hmargin + barWidth + prop['chart.variant.threed.offsetx'],
-      
-      
+
+
       this.data[i] < 0 && (y - prop['chart.variant.threed.offsety'] + height) < (this.gutterTop + this.getYCoord(0))
     ? this.getYCoord(this.data[i]) - prop['chart.variant.threed.offsety']
     : (this.data[i] > 0 ?
@@ -1218,7 +1218,7 @@ co.lineTo(
 );
                                     co.lineTo(x + hmargin + barWidth, y + height);
                                 co.closePath();
-                                co.stroke();                        
+                                co.stroke();
                                 co.fill();
 
 
@@ -1237,9 +1237,9 @@ co.lineTo(
                                     co.stroke();
                                     co.fill();
                                 }
-    
-    
-    
+
+
+
 
                                 // Draw the darker right side section
                                 co.beginPath();
@@ -1252,11 +1252,11 @@ co.lineTo(
                                         x + hmargin + barWidth + prop['chart.variant.threed.offsetx'],
                                         this.data[i] < 0 && xaxispos === 'bottom' ? this.getYCoord(0) : (this.data[i] < 0 && (y - prop['chart.variant.threed.offsety']) < (this.gutterTop + this.halfgrapharea) ? (this.gutterTop + this.halfgrapharea) : y - prop['chart.variant.threed.offsety'])
                                     );
-                                    
+
                                     // BR
                                     co.lineTo(
                                         x + hmargin + barWidth + prop['chart.variant.threed.offsetx'],
-                                        
+
                                           this.data[i] < 0 && (y - prop['chart.variant.threed.offsety'] + height) < this.getYCoord(0)
                                         ? this.getYCoord(0)
                                         : this.data[i] > 0 ? y - prop['chart.variant.threed.offsety'] + height : ma.min(y - prop['chart.variant.threed.offsety'] + height, ca.height - this.gutterBottom)
@@ -1268,124 +1268,124 @@ co.lineTo(
 
                                 co.stroke();
                                 co.fill();
-    
+
                                 co.strokeStyle = prevStrokeStyle;
                                 co.fillStyle   = prevFillStyle;
-                            
+
                             // Glass variant
                             } else if (variant == 'glass') {
-     
+
                                 var grad = co.createLinearGradient(x + hmargin,y,x + hmargin + (barWidth / 2),y);
                                 grad.addColorStop(0, 'rgba(255,255,255,0.9)');
                                 grad.addColorStop(1, 'rgba(255,255,255,0.5)');
-    
+
                                 co.beginPath();
                                 co.fillStyle = grad;
                                 co.fillRect(x + hmargin + 2,y + (this.data[i] > 0 ? 2 : 0),(barWidth / 2) - 2,height - 2);
                                 co.fill();
                             }
 
-    
+
                         // Dot chart
                         } else if (variant == 'dot') {
-    
+
                             co.beginPath();
                             co.moveTo(x + (width / 2), y);
                             co.lineTo(x + (width / 2), y + height);
                             co.stroke();
-                            
+
                             co.beginPath();
                             co.fillStyle = this.properties['chart.colors'][i];
                             co.arc(x + (width / 2), y + (this.data[i] > 0 ? 0 : height), 2, 0, 6.28, 0);
-                            
+
                             // Set the colour for the dots
                             co.fillStyle = prop['chart.colors'][0];
-    
+
                             /**
                             * Sequential colors
                             */
                             if (prop['chart.colors.sequential']) {
                                 co.fillStyle = colors[i];
                             }
-    
+
                             co.stroke();
                             co.fill();
 
-    
-    
+
+
                         // Unknown variant type
                         } else {
                             alert('[BAR] Warning! Unknown chart.variant: ' + variant);
                         }
 
                         this.coords.push([x + hmargin, y, width - (2 * hmargin), height]);
-    
+
                             if (typeof this.coords2[i] == 'undefined') {
                                 this.coords2[i] = [];
                             }
                             this.coords2[i].push([x + hmargin, y, width - (2 * hmargin), height]);
-    
-    
+
+
                     /**
                     * Stacked bar
                     */
                     } else if (this.data[i] && typeof(this.data[i]) == 'object' && prop['chart.grouping'] == 'stacked') {
-                    
+
                         if (this.scale2.min) {
                             alert("[ERROR] Stacked Bar charts with a Y min are not supported");
                         }
-                        
+
                         var barWidth     = width - (2 * hmargin);
                         var redrawCoords = [];// Necessary to draw if the shadow is enabled
                         var startY       = 0;
                         var dataset      = this.data[i];
-                        
+
                         /**
                         * Check for a negative bar width
                         */
                         if (barWidth < 0) {
                             alert('[RGRAPH] Warning: you have a negative bar width. This may be caused by the chart.hmargin being too high or the width of the canvas not being sufficient.');
                         }
-    
+
                         for (j=0; j<dataset.length; ++j) {
-    
+
                             // Stacked bar chart and X axis pos in the middle - poitless since negative values are not permitted
                             if (xaxispos == 'center') {
                                 alert("[BAR] It's pointless having the X axis position at the center on a stacked bar chart.");
                                 return;
                             }
-    
+
                             // Negative values not permitted for the stacked chart
                             if (this.data[i][j] < 0) {
                                 alert('[BAR] Negative values are not permitted with a stacked bar chart. Try a grouped one instead.');
                                 return;
                             }
-    
+
                             /**
                             * Set the fill and stroke colors
                             */
                             co.strokeStyle = strokeStyle
                             co.fillStyle = colors[j];
-        
+
                             if (prop['chart.colors.reverse']) {
                                 co.fillStyle = colors[this.data[i].length - j - 1];
                             }
-                            
+
                             if (prop['chart.colors.sequential'] && colors[sequentialColorIndex]) {
                                 co.fillStyle = colors[sequentialColorIndex++];
                             } else if (prop['chart.colors.sequential']) {
                                 co.fillStyle = colors[sequentialColorIndex - 1];
                             }
-    
+
                             var height = (dataset[j] / this.scale2.max) * (ca.height - this.gutterTop - this.gutterBottom );
 
                             // If the X axis pos is in the center, we need to half the  height
                             if (xaxispos == 'center') {
                                 height /= 2;
                             }
-    
+
                             var totalHeight = (RGraph.array_sum(dataset) / this.scale2.max) * (ca.height - hmargin - this.gutterTop - this.gutterBottom);
-    
+
                             /**
                             * Store the coords for tooltips
                             */
@@ -1394,39 +1394,39 @@ co.lineTo(
                                 this.coords2[i] = [];
                             }
                             this.coords2[i].push([x + hmargin, y, width - (2 * hmargin), height]);
-    
+
                             // MSIE shadow
                             if (RGraph.ISOLD && shadow) {
                                 this.DrawIEShadow([x + hmargin, y, width - (2 * hmargin), height + 1]);
                             }
-    
+
                             if (height > 0) {
                                 co.strokeRect(x + hmargin, y, width - (2 * hmargin), height);
                                 co.fillRect(x + hmargin, y, width - (2 * hmargin), height);
                             }
 
-                            
+
                             if (j == 0) {
                                 var startY = y;
                                 var startX = x;
                             }
-    
+
                             /**
                             * Store the redraw coords if the shadow is enabled
                             */
                             if (shadow) {
                                 redrawCoords.push([x + hmargin, y, width - (2 * hmargin), height, co.fillStyle]);
                             }
-    
+
                             /**
                             * Stacked 3D effect
                             */
                             if (variant == '3d') {
-    
+
                                 var prevFillStyle = co.fillStyle;
                                 var prevStrokeStyle = co.strokeStyle;
-    
-        
+
+
                                 // Draw the top side
                                 if (j == 0) {
                                     co.beginPath();
@@ -1435,11 +1435,11 @@ co.lineTo(
                                         co.lineTo(startX + prop['chart.variant.threed.offsetx'] + barWidth + hmargin, y - prop['chart.variant.threed.offsety']);
                                         co.lineTo(startX + barWidth + hmargin, y);
                                     co.closePath();
-                                    
+
                                     co.fill();
                                     co.stroke();
                                 }
-    
+
                                 // Draw the side section
                                 co.beginPath();
                                     co.moveTo(startX + barWidth + hmargin, y);
@@ -1447,10 +1447,10 @@ co.lineTo(
                                     co.lineTo(startX + barWidth + hmargin + prop['chart.variant.threed.offsetx'], y - prop['chart.variant.threed.offsety'] + height);
                                     co.lineTo(startX + barWidth + hmargin , y + height);
                                 co.closePath();
-                                
+
                                 co.fill();
                                 co.stroke();
-    
+
                                 // Draw the lighter top side
                                 if (j == 0) {
                                     co.fillStyle = 'rgba(255,255,255,0.5)';
@@ -1460,11 +1460,11 @@ co.lineTo(
                                         co.lineTo(startX + prop['chart.variant.threed.offsetx'] + barWidth + hmargin, y - prop['chart.variant.threed.offsety']);
                                         co.lineTo(startX + barWidth + hmargin, y);
                                     co.closePath();
-                                    
+
                                     co.fill();
                                     co.stroke();
                                 }
-    
+
                                 // Draw the darker side section
                                 co.fillStyle = 'rgba(0,0,0,0.4)';
                                 co.beginPath();
@@ -1473,37 +1473,37 @@ co.lineTo(
                                     co.lineTo(startX + barWidth + hmargin + prop['chart.variant.threed.offsetx'], y - prop['chart.variant.threed.offsety'] + height);
                                     co.lineTo(startX + barWidth + hmargin , y + height);
                                 co.closePath();
-                                
+
                                 co.fill();
                                 co.stroke();
-    
+
                                 co.strokeStyle = prevStrokeStyle;
                                 co.fillStyle = prevFillStyle;
                             }
-    
+
                             y += height;
                         }
 
-                        
-    
+
+
                         /**
                         * Redraw the bars if the shadow is enabled due to hem being drawn from the bottom up, and the
                         * shadow spilling over to higher up bars
                         */
                         if (shadow) {
-    
+
                             RGraph.NoShadow(this);
-    
+
                             for (k=0; k<redrawCoords.length; ++k) {
                                 co.strokeStyle = strokeStyle;
                                 co.fillStyle = redrawCoords[k][4];
                                 co.strokeRect(redrawCoords[k][0], redrawCoords[k][1], redrawCoords[k][2], redrawCoords[k][3]);
                                 co.fillRect(redrawCoords[k][0], redrawCoords[k][1], redrawCoords[k][2], redrawCoords[k][3]);
-    
+
                                 co.stroke();
                                 co.fill();
                             }
-                            
+
                             // Reset the redraw coords to be empty
                             redrawCoords = [];
                         }
@@ -1512,16 +1512,16 @@ co.lineTo(
                     * Grouped bar
                     */
                     } else if (this.data[i] && typeof(this.data[i]) == 'object' && prop['chart.grouping'] == 'grouped') {
-    
+
                         var redrawCoords = [];
                         co.lineWidth = prop['chart.linewidth'];
-    
+
                         for (j=0; j<this.data[i].length; ++j) {
-    
+
                             // Set the fill and stroke colors
                             co.strokeStyle = strokeStyle;
                             co.fillStyle   = colors[j];
-                            
+
                             /**
                             * Sequential colors
                             */
@@ -1530,34 +1530,34 @@ co.lineTo(
                             } else if (prop['chart.colors.sequential']) {
                                 co.fillStyle = colors[sequentialColorIndex - 1];
                             }
-    
+
                             var individualBarWidth = (width - (2 * hmargin)) / this.data[i].length;
                             var height = ((this.data[i][j] + (this.data[i][j] < 0 ? this.scale2.min : (-1 * this.scale2.min) )) / (this.scale2.max - this.scale2.min) ) * (ca.height - this.gutterTop - this.gutterBottom );
                             var groupedMargin = prop['chart.hmargin.grouped'];
                             var startX = x + hmargin + (j * individualBarWidth);
-    
+
                             /**
                             * Check for a negative bar width
                             */
                             if (individualBarWidth < 0) {
                                 alert('[RGRAPH] Warning: you have a negative bar width. This may be caused by the chart.hmargin being too high or the width of the canvas not being sufficient.');
                             }
-    
+
                             // If the X axis pos is in the center, we need to half the  height
                             if (xaxispos == 'center') {
                                 height /= 2;
                             }
-    
+
                             /**
                             * Determine the start positioning for the bar
                             */
                             if (xaxispos == 'top') {
                                 var startY = this.gutterTop;
                                 var height = Math.abs(height);
-    
+
                             } else if (xaxispos == 'center') {
                                 var startY = this.gutterTop + (this.grapharea / 2) - height;
-    
+
                             } else {
                                 var startY = this.getYCoord(0);//ca.height - this.gutterBottom - height;
                                 var height = ma.abs(ma.abs(this.getYCoord(this.data[i][j])) - this.getYCoord(0));
@@ -1567,13 +1567,13 @@ co.lineTo(
                                 }
 
                             }
-    
+
                             co.strokeRect(startX + groupedMargin, startY, individualBarWidth - (2 * groupedMargin), height);
                             co.fillRect(startX + groupedMargin, startY, individualBarWidth - (2 * groupedMargin), height);
                             y += height;
-    
-    
-    
+
+
+
                             /**
                             * Grouped 3D effect
                             */
@@ -1612,29 +1612,29 @@ co.lineTo(
                                 co.closePath();
                                 co.fill();
                                 co.stroke();
-    
-    
+
+
                                 // Draw the lighter top side - but only if the current value is positive
                                 if (this.data[i][j] >= 0) {
                                     co.fillStyle = 'rgba(255,255,255,0.5)';
                                     co.beginPath();
                                         // BL
                                         co.moveTo(startX + hmarginGrouped, startY);
-                                        
+
                                         // BR
                                         co.lineTo(startX + hmarginGrouped + prop['chart.variant.threed.offsetx'], startY - prop['chart.variant.threed.offsety']);
-                                        
+
                                         // TR
                                         co.lineTo(startX + prop['chart.variant.threed.offsetx'] + individualBarWidth - hmarginGrouped, startY - prop['chart.variant.threed.offsety']);
-                                        
+
                                         // TL
                                         co.lineTo(startX + individualBarWidth - hmarginGrouped, startY);
                                     co.closePath();
-                                    
+
                                     co.fill();
                                     co.stroke();
                                 }
-                                
+
                                 // Draw the darker side section
                                 co.fillStyle = 'rgba(0,0,0,0.4)';
                                 co.beginPath();
@@ -1643,42 +1643,42 @@ co.lineTo(
                                         startX + individualBarWidth - hmarginGrouped,
                                         startY
                                     );
-                                    
+
 
                                     co.lineTo(
                                         startX + individualBarWidth + prop['chart.variant.threed.offsetx'] - hmarginGrouped,
                                         this.data[i][j] < 0 ? (this.getYCoord(0) + ma.abs(height) - prop['chart.variant.threed.offsety']) : this.getYCoord(0) - height - prop['chart.variant.threed.offsety']
                                     );
-                                    
+
                                     // TR corner
                                     co.lineTo(
                                         startX + individualBarWidth + prop['chart.variant.threed.offsetx'] - hmarginGrouped,
                                         this.data[i][j] < 0 && (startY + height - 5) < (this.gutterTop + this.halfgrapharea) ? (this.gutterTop + this.halfgrapharea) : (startY + height - prop['chart.variant.threed.offsety'])
                                     );
-                                    
+
                                     // TL corner
                                     co.lineTo(startX + individualBarWidth - hmarginGrouped, startY + height);
                                 co.closePath();
 
                                 co.fill();
                                 co.stroke();
-    
+
                                 co.strokeStyle = prevStrokeStyle;
                                 co.fillStyle   = prevFillStyle;
                             }
-                            
+
                             if (height < 0) {
                                 height = Math.abs(height);
                                 startY = startY - height;
                             }
-    
+
                             this.coords.push([startX + groupedMargin, startY, individualBarWidth - (2 * groupedMargin), height]);
                             if (typeof this.coords2[i] == 'undefined') {
                                 this.coords2[i] = [];
                             }
 
                             this.coords2[i].push([startX + groupedMargin, startY, individualBarWidth - (2 * groupedMargin), height]);
-    
+
                             // Facilitate shadows going to the left
                             if (prop['chart.shadow']) {
                                 redrawCoords.push([startX + groupedMargin, startY, individualBarWidth - (2 * groupedMargin), height, co.fillStyle]);
@@ -1695,32 +1695,32 @@ co.lineTo(
                         * Redraw the bar if shadows are going to the left
                         */
                         if (redrawCoords.length) {
-    
+
                             RGraph.NoShadow(this);
-                            
+
                             co.lineWidth = prop['chart.linewidth'];
-    
+
                             co.beginPath();
                                 for (var j=0; j<redrawCoords.length; ++j) {
-    
+
                                     co.fillStyle   = redrawCoords[j][4];
                                     co.strokeStyle = prop['chart.strokecolor'];
-    
+
                                     co.fillRect(redrawCoords[j][0], redrawCoords[j][1], redrawCoords[j][2], redrawCoords[j][3]);
                                     co.strokeRect(redrawCoords[j][0], redrawCoords[j][1], redrawCoords[j][2], redrawCoords[j][3]);
                                 }
                             co.fill();
                             co.stroke();
-    
+
                             redrawCoords = [];
                         }
                     } else {
                         this.coords.push([]);
                     }
-    
+
                 co.closePath();
             }
-            
+
             // If 3D, redraw the right hand Y axis
             if (prop['chart.variant'] === '3d' && prop['chart.yaxispos'] === 'right') {
                 RG.draw3DYAxis(this);
@@ -1735,9 +1735,9 @@ co.lineTo(
             */
             RGraph.noShadow(this);
         };
-    
-    
-    
+
+
+
         /**
         * Draws the labels for the graph
         */
@@ -1745,29 +1745,29 @@ co.lineTo(
         this.DrawLabels = function ()
         {
             var context = co;
-    
+
             var text_angle = prop['chart.text.angle'],
                 text_size  = prop['chart.text.size'],
                 labels     = prop['chart.labels']
 
-    
-    
+
+
             // Draw the Y axis labels:
             if (prop['chart.ylabels']) {
                 if (prop['chart.xaxispos'] == 'top')    this.Drawlabels_top();
                 if (prop['chart.xaxispos'] == 'center') this.Drawlabels_center();
                 if (prop['chart.xaxispos'] == 'bottom') this.Drawlabels_bottom();
             }
-    
+
             /**
             * The X axis labels
             */
             if (typeof(labels) == 'object' && labels) {
-    
+
                 var yOffset = Number(prop['chart.labels.offsety']),
                     xOffset = Number(prop['chart.labels.offsetx']),
                     bold    = prop['chart.labels.bold']
-    
+
                 /**
                 * Text angle
                 */
@@ -1780,22 +1780,22 @@ co.lineTo(
                     var halign =  'center';
                     var angle  = 0;
                 }
-    
+
                 // Draw the X axis labels
                 co.fillStyle = prop['chart.labels.color'] || prop['chart.text.color'];
-                
+
                 // How wide is each bar
                 var barWidth = (ca.width - this.gutterRight - this.gutterLeft) / labels.length;
-                
+
                 // Reset the xTickGap
                 xTickGap = (ca.width - this.gutterRight - this.gutterLeft) / labels.length
-    
+
                 // Draw the X tickmarks
                 var i=0;
                 var font = prop['chart.text.font'];
-    
+
                 for (x=this.gutterLeft + (xTickGap / 2); x<=ca.width - this.gutterRight; x+=xTickGap) {
-    
+
                     RG.text2(this, {
                         'font': font,
                         'size': text_size,
@@ -1812,15 +1812,15 @@ co.lineTo(
                     });
                 }
             }
-            
+
             /**
             * Draw above labels
             */
             this.drawAboveLabels();
         };
-    
-    
-    
+
+
+
         /**
         * Draws the X axis at the top
         */
@@ -1830,13 +1830,13 @@ co.lineTo(
             var ca   = this.canvas;
             var co   = this.context;
             var prop = this.properties;
-    
+
             co.beginPath();
             co.fillStyle   = prop['chart.text.color'];
             co.strokeStyle = 'black';
-    
+
             if (prop['chart.xaxispos'] == 'top') {
-    
+
                 var context    = co;
                 var text_size  = prop['chart.text.size'];
                 var units_pre  = prop['chart.units.pre'];
@@ -1847,7 +1847,7 @@ co.lineTo(
                 var ymin       = prop['chart.ymin'];
                 var offsetx     = prop['chart.ylabels.offsetx'];
                 var offsety     = prop['chart.ylabels.offsety'];
-    
+
                 if (prop['chart.ylabels.inside'] == true) {
                     var xpos  = prop['chart.yaxispos'] == 'left' ? this.gutterLeft + 5 : ca.width - this.gutterRight - 5;
                     var align = prop['chart.yaxispos'] == 'left' ? 'left' : 'right';
@@ -1856,17 +1856,17 @@ co.lineTo(
                     var xpos  = prop['chart.yaxispos'] == 'left' ? this.gutterLeft - 5 : ca.width - this.gutterRight + 5;
                     var boxed = false;
                 }
-                
+
                 /**
                 * Draw specific Y labels here so that the local variables can be reused
                 */
                 if (typeof(prop['chart.ylabels.specific']) == 'object' && prop['chart.ylabels.specific']) {
-                    
+
                     var labels = RGraph.array_reverse(prop['chart.ylabels.specific']);
                     var grapharea = ca.height - this.gutterTop - this.gutterBottom;
-    
+
                     for (var i=0; i<labels.length; ++i) {
-                        
+
                         var y = this.gutterTop + (grapharea * (i / labels.length)) + (grapharea / labels.length);
 
                         RG.text2(this, {
@@ -1881,16 +1881,16 @@ co.lineTo(
                             'tag': 'scale'
                         });
                     }
-    
+
                     return;
                 }
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
                 /**
                 * Draw the scale
                 */
@@ -1908,19 +1908,19 @@ co.lineTo(
                         'tag':'scale'
                     });
                 }
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
                 /**
                 * Show the minimum value if its not zero
                 */
                 if (prop['chart.ymin'] != 0 || prop['chart.noxaxis'] || prop['chart.scale.zerostart']) {
-    
+
                     RGraph.Text2(this, {
                         'font': font,
                         'size': text_size,
@@ -1933,14 +1933,14 @@ co.lineTo(
                         'tag': 'scale'
                     });
                 }
-    
+
             }
-            
+
             co.fill();
         };
-    
-    
-    
+
+
+
         /**
         * Draws the X axis in the middle
         */
@@ -1950,14 +1950,14 @@ co.lineTo(
             var ca   = this.canvas;
             var co   = this.context;
             var prop = this.properties;
-    
+
             var font       = prop['chart.text.font'];
             var numYLabels = prop['chart.ylabels.count'];
-    
+
             co.fillStyle = prop['chart.text.color'];
-    
+
             if (prop['chart.xaxispos'] == 'center') {
-    
+
                 /**
                 * Draw the top labels
                 */
@@ -1971,10 +1971,10 @@ co.lineTo(
                 var ymin    = prop['chart.ymin'];
                 var offsetx = prop['chart.ylabels.offsetx'];
                 var offsety = prop['chart.ylabels.offsety'];
-    
+
                 co.fillStyle   = prop['chart.text.color'];
                 co.strokeStyle = 'black';
-    
+
                 if (prop['chart.ylabels.inside'] == true) {
                     var xpos  = prop['chart.yaxispos'] == 'left' ? this.gutterLeft + 5 : ca.width - this.gutterRight - 5;
                     var align = prop['chart.yaxispos'] == 'left' ? 'left' : 'right';
@@ -1984,31 +1984,31 @@ co.lineTo(
                     var align = prop['chart.yaxispos'] == 'left' ? 'right' : 'left';
                     var boxed = false;
                 }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
+
                 /**
                 * Draw specific Y labels here so that the local variables can be reused
                 */
                 if (typeof(prop['chart.ylabels.specific']) == 'object' && prop['chart.ylabels.specific']) {
-    
+
                     var labels    = prop['chart.ylabels.specific'];
                     var grapharea = ca.height - this.gutterTop - this.gutterBottom;
-    
+
                     // Draw the top halves labels
                     for (var i=0; i<labels.length; ++i) {
-    
+
                         var y = this.gutterTop + ((grapharea / 2) / (labels.length - 1)) * i;
-    
+
                         RGraph.Text2(this, {
                             'font':font,
                             'size':text_size,
@@ -2021,12 +2021,12 @@ co.lineTo(
                             'tag': 'scale'
                         });
                     }
-    
+
                     // Draw the bottom halves labels
                     for (var i=labels.length-1; i>=1; --i) {
-                        
+
                         var y = this.gutterTop  + (grapharea * (i / ((labels.length - 1) * 2) )) + (grapharea / 2);
-    
+
                         RG.Text2(this, {
                             'font':font,
                             'size':text_size,
@@ -2039,19 +2039,19 @@ co.lineTo(
                             'tag': 'scale'
                         });
                     }
-    
+
                     return;
                 }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
                 /**
                 * Draw the top halfs labels
                 */
@@ -2072,7 +2072,7 @@ co.lineTo(
                         'tag':'scale'
                     });
                 }
-                
+
                 /**
                 * Draw the bottom halfs labels
                 */
@@ -2091,11 +2091,11 @@ co.lineTo(
                         'tag':'scale'
                     });
                 }
-    
-    
-    
-    
-    
+
+
+
+
+
                 /**
                 * Show the minimum value if its not zero
                 */
@@ -2115,10 +2115,10 @@ co.lineTo(
                 }
             }
         };
-    
-    
-    
-    
+
+
+
+
         /**
         * Draws the X axdis at the bottom (the default)
         */
@@ -2135,12 +2135,12 @@ co.lineTo(
                 ymin       = prop['chart.ymin'],
                 offsetx    = prop['chart.ylabels.offsetx'],
                 offsety    = prop['chart.ylabels.offsety']
-    
+
             co.beginPath();
-            
+
             co.fillStyle   = prop['chart.text.color'];
             co.strokeStyle = 'black';
-    
+
             if (prop['chart.ylabels.inside'] == true) {
                 var xpos  = prop['chart.yaxispos'] == 'left' ? this.gutterLeft + 5 : ca.width - this.gutterRight - 5;
                 var align = prop['chart.yaxispos'] == 'left' ? 'left' : 'right';
@@ -2149,18 +2149,18 @@ co.lineTo(
                 var xpos  = prop['chart.yaxispos'] == 'left' ? this.gutterLeft - 5 : ca.width - this.gutterRight + 5;
                 var boxed = false;
             }
-    
+
             /**
             * Draw specific Y labels here so that the local variables can be reused
             */
             if (prop['chart.ylabels.specific'] && typeof(prop['chart.ylabels.specific']) == 'object') {
-    
+
                 var labels = prop['chart.ylabels.specific'];
                 var grapharea = ca.height - this.gutterTop - this.gutterBottom;
-    
+
                 for (var i=0; i<labels.length; ++i) {
                     var y = this.gutterTop + (grapharea * (i / (labels.length - 1)));
-    
+
                     RGraph.Text2(this, {
                         'font':font,
                         'size':text_size,
@@ -2173,15 +2173,15 @@ co.lineTo(
                         'tag':'scale'
                     });
                 }
-    
+
                 return;
             }
-    
+
             var gutterTop      = this.gutterTop;
             var halfTextHeight = this.halfTextHeight;
             var scale          = this.scale;
-    
-    
+
+
             for (var i=0; i<numYLabels; ++i) {
                 var text = this.scale2.labels[i];
                 RGraph.Text2(this, {
@@ -2196,8 +2196,8 @@ co.lineTo(
                     'tag':'scale'
                 });
             }
-    
-            
+
+
             /**
             * Show the minimum value if its not zero
             */
@@ -2214,14 +2214,14 @@ co.lineTo(
                     tag:'scale'
                 });
             }
-            
+
             co.fill();
         };
-    
-    
+
+
         /**
         * This function is used by MSIE only to manually draw the shadow
-        * 
+        *
         * @param array coords The coords for the bar
         */
         this.drawIEShadow =
@@ -2230,20 +2230,20 @@ co.lineTo(
             var co   = this.context;
             var ca   = this.canvas;
             var prop = this.properties;
-    
+
             var prevFillStyle = co.fillStyle;
             var offsetx       = prop['chart.shadow.offsetx'];
             var offsety       = prop['chart.shadow.offsety'];
-            
+
             co.lineWidth = prop['chart.linewidth'];
             co.fillStyle = prop['chart.shadow.color'];
             co.beginPath();
-            
+
             // Draw shadow here
             co.fillRect(coords[0] + offsetx, coords[1] + offsety, coords[2], coords[3]);
-    
+
             co.fill();
-            
+
             // Change the fillstyle back to what it was
             co.fillStyle = prevFillStyle;
         };
@@ -2254,27 +2254,27 @@ co.lineTo(
         /**
         * Not used by the class during creating the graph, but is used by event handlers
         * to get the coordinates (if any) of the selected bar
-        * 
+        *
         * @param object e The event object
         * @param object   OPTIONAL You can pass in the bar object instead of the
         *                          function using "this"
         */
-        this.getShape = 
+        this.getShape =
         this.getBar = function (e)
         {
             // This facilitates you being able to pass in the bar object as a parameter instead of
             // the function getting it from itself
             var obj = arguments[1] ? arguments[1] : this;
-    
+
             var mouseXY = RG.getMouseXY(e),
                 mouseX  = mouseXY[0],
-                mouseY  = mouseXY[1],  
+                mouseY  = mouseXY[1],
                 canvas  = obj.canvas,
                 context = obj.context,
                 coords  = obj.coords
 
             for (var i=0,len=coords.length; i<len; i+=1) {
-            
+
                 if (obj.coords[i].length == 0) {
                     continue;
                 }
@@ -2284,10 +2284,10 @@ co.lineTo(
                     width  = coords[i][2],
                     height = coords[i][3],
                     prop   = obj.properties
-    
+
                 // Old way of testing
                 //if (mouseX >= left && mouseX <= (left + width) && mouseY >= top && mouseY <= (top + height)) {
-                
+
                 // Recreate the path/rectangle so that it can be tested
                 //  ** DO NOT STROKE OR FILL IT **
                 if (prop['chart.tooltips.hotspot.xonly']) {
@@ -2335,7 +2335,7 @@ co.lineTo(
                     if (typeof(obj.data[dataset]) == 'number') {
                         idx = null;
                     }
-    
+
 
                     return {
                         0: obj, 1: left, 2: top, 3: width, 4: height, 5: i,
@@ -2343,7 +2343,7 @@ co.lineTo(
                     };
                 }
             }
-            
+
             return null;
         };
 
@@ -2352,7 +2352,7 @@ co.lineTo(
 
         /**
         * This retrives the bar based on the X coordinate only.
-        * 
+        *
         * @param object e The event object
         * @param object   OPTIONAL You can pass in the bar object instead of the
         *                          function using "this"
@@ -2361,13 +2361,13 @@ co.lineTo(
         {
             var canvas      = e.target;
             var mouseCoords = RGraph.getMouseXY(e);
-    
-    
+
+
             // This facilitates you being able to pass in the bar object as a parameter instead of
             // the function getting it from itself
             var obj = arguments[1] ? arguments[1] : this;
-    
-    
+
+
             /**
             * Loop through the bars determining if the mouse is over a bar
             */
@@ -2378,28 +2378,28 @@ co.lineTo(
                 }
 
                 var mouseX = mouseCoords[0];
-                var mouseY = mouseCoords[1];    
+                var mouseY = mouseCoords[1];
                 var left   = obj.coords[i][0];
                 var top    = obj.coords[i][1];
                 var width  = obj.coords[i][2];
                 var height = obj.coords[i][3];
                 var prop   = obj.properties;
-    
+
                 if (mouseX >= left && mouseX <= (left + width)) {
-                
+
                     if (prop['chart.tooltips']) {
                         var tooltip = RGraph.parseTooltipText ? RGraph.parseTooltipText(prop['chart.tooltips'], i) : prop['chart.tooltips'][i];
                     }
 
-    
-    
+
+
                     return {
                             0: obj, 1: left, 2: top, 3: width, 4: height, 5: i,
                             'object': obj, 'x': left, 'y': top, 'width': width, 'height': height, 'index': i, 'tooltip': tooltip
                            };
                 }
             }
-            
+
             return null;
         };
 
@@ -2409,13 +2409,13 @@ co.lineTo(
         /**
         * When you click on the chart, this method can return the Y value at that point. It works for any point on the
         * chart (that is inside the gutters) - not just points within the Bars.
-        * 
+        *
         * EITHER:
-        * 
+        *
         * @param object arg The event object
-        * 
+        *
         * OR:
-        * 
+        *
         * @param object arg A two element array containing the X and Y coordinates
         */
         this.getValue = function (arg)
@@ -2423,7 +2423,7 @@ co.lineTo(
             var co   = this.context;
             var ca   = this.canvas;
             var prop = this.properties;
-    
+
             if (arg.length == 2) {
                 var mouseX = arg[0];
                 var mouseY = arg[1];
@@ -2432,7 +2432,7 @@ co.lineTo(
                 var mouseX      = mouseCoords[0];
                 var mouseY      = mouseCoords[1];
             }
-    
+
             if (   mouseY < prop['chart.gutter.top']
                 || mouseY > (ca.height - prop['chart.gutter.bottom'])
                 || mouseX < prop['chart.gutter.left']
@@ -2440,17 +2440,17 @@ co.lineTo(
                ) {
                 return null;
             }
-            
+
             if (prop['chart.xaxispos'] == 'center') {
                 var value = (((this.grapharea / 2) - (mouseY - prop['chart.gutter.top'])) / this.grapharea) * (this.scale2.max - this.scale2.min)
                 value *= 2;
-                
+
                 if (value >= 0) {
                     value += this.scale2.min;
                 } else {
                     value -= this.scale2.min;
                 }
-    
+
             } else if (prop['chart.xaxispos'] == 'top') {
                 var value = ((this.grapharea - (mouseY - prop['chart.gutter.top'])) / this.grapharea) * (this.scale2.max - this.scale2.min)
                 value = this.scale2.max - value;
@@ -2465,12 +2465,12 @@ co.lineTo(
 
             return value;
         };
-    
-    
+
+
         /**
         * This function can be used when the canvas is clicked on (or similar - depending on the event)
         * to retrieve the relevant Y coordinate for a particular value.
-        * 
+        *
         * @param int value The value to get the Y coordinate for
         */
         this.getYCoord = function (value)
@@ -2479,29 +2479,29 @@ co.lineTo(
             if (value > this.scale2.max) {
                 return null;
             }
-    
+
             var co   = this.context,
                 ca   = this.canvas,
                 prop = this.properties;
-    
+
             var y, xaxispos = prop['chart.xaxispos'];
-    
+
             if (xaxispos == 'top') {
-            
+
                 // Account for negative numbers
                 if (value < 0) {
                     value = ma.abs(value);
                 }
-    
+
                 y = ((value - this.scale2.min) / (this.scale2.max - this.scale2.min)) * this.grapharea;
                 y = y + this.gutterTop
-    
+
             } else if (xaxispos == 'center') {
-    
+
                 y = ((value - this.scale2.min) / (this.scale2.max - this.scale2.min)) * (this.grapharea / 2);
                 y = (this.grapharea / 2) - y;
                 y += this.gutterTop;
-    
+
             } else {
 
                 if (value < this.scale2.min) {
@@ -2510,18 +2510,18 @@ co.lineTo(
 
                 y  = ((value - this.scale2.min) / (this.scale2.max - this.scale2.min));
                 y *= (ca.height - this.gutterTop - this.gutterBottom);
-    
+
                 y = ca.height - this.gutterBottom - y;
             }
 
             return y;
         };
-    
-    
-    
+
+
+
         /**
         * Each object type has its own Highlight() function which highlights the appropriate shape
-        * 
+        *
         * @param object shape The shape to highlight
         */
         this.highlight =
@@ -2534,16 +2534,16 @@ co.lineTo(
                 RG.Highlight.Rect(this, shape);
             }
         };
-    
-    
-    
+
+
+
         /**
         * The getObjectByXY() worker method
         */
         this.getObjectByXY = function (e)
         {
             var mouseXY = RG.getMouseXY(e);
-            
+
             // Adjust the mouse Y coordinate for when the bar chart is
             // a 3D variant
             if (prop['chart.variant'] === '3d') {
@@ -2559,7 +2559,7 @@ co.lineTo(
                 && mouseXY[1] >= prop['chart.gutter.top']
                 && mouseXY[1] <= (ca.height - prop['chart.gutter.bottom'])
                 ) {
-    
+
                 return this;
             }
         };
@@ -2569,7 +2569,7 @@ co.lineTo(
 
         /**
         * This method handles the adjusting calculation for when the mouse is moved
-        * 
+        *
         * @param object e The event object
         */
         this.adjusting_mousemove =
@@ -2579,7 +2579,7 @@ co.lineTo(
             * Handle adjusting for the Bar
             */
             if (prop['chart.adjustable'] && RG.Registry.Get('chart.adjusting') && RG.Registry.Get('chart.adjusting').uid == this.uid) {
-    
+
                 // Rounding the value to the given number of decimals make the chart step
                 var value   = Number(this.getValue(e));
                 var shape   = RG.Registry.Get('chart.adjusting.shape')
@@ -2601,7 +2601,7 @@ co.lineTo(
 
                         this.data[shape['index']] = Number(value);
                     }
-    
+
                     RG.redrawCanvas(e.target);
                     RG.fireCustomEvent(this, 'onadjust');
                 }
@@ -2631,8 +2631,8 @@ co.lineTo(
                 this.original_colors['chart.strokecolor']           = prop['chart.strokecolor'];
                 this.original_colors['chart.axis.color']            = prop['chart.axis.color'];
             }
-            
-            
+
+
             // chart.colors
             var colors = prop['chart.colors'];
             if (colors) {
@@ -2640,7 +2640,7 @@ co.lineTo(
                     colors[i] = this.parseSingleColorForGradient(colors[i]);
                 }
             }
-    
+
             // chart.key.colors
             var colors = prop['chart.key.colors'];
             if (colors) {
@@ -2648,7 +2648,7 @@ co.lineTo(
                     colors[i] = this.parseSingleColorForGradient(colors[i]);
                 }
             }
-    
+
              prop['chart.crosshairs.color']      = this.parseSingleColorForGradient(prop['chart.crosshairs.color']);
              prop['chart.highlight.stroke']      = this.parseSingleColorForGradient(prop['chart.highlight.stroke']);
              prop['chart.highlight.fill']        = this.parseSingleColorForGradient(prop['chart.highlight.fill']);
@@ -2671,9 +2671,9 @@ co.lineTo(
         this.reset = function ()
         {
         };
-    
-    
-    
+
+
+
         /**
         * This parses a single color value
         */
@@ -2682,68 +2682,68 @@ co.lineTo(
             if (!color || typeof(color) != 'string') {
                 return color;
             }
-    
+
             if (color.match(/^gradient\((.*)\)$/i)) {
-                
+
                 var parts = RegExp.$1.split(':');
-    
+
                 // Create the gradient
                 var grad = co.createLinearGradient(0,ca.height - prop['chart.gutter.bottom'], 0, prop['chart.gutter.top']);
-    
+
                 var diff = 1 / (parts.length - 1);
-    
+
                 grad.addColorStop(0, RG.trim(parts[0]));
-    
+
                 for (var j=1,len=parts.length; j<len; ++j) {
                     grad.addColorStop(j * diff, RGraph.trim(parts[j]));
                 }
             }
-                
+
             return grad ? grad : color;
         };
-    
-    
-    
+
+
+
         this.drawBevel =
         this.DrawBevel = function ()
         {
            var coords  = this.coords;
            var coords2 = this.coords2;
-           
+
            var prop    = this.properties;
            var co      = this.context;
            var ca      = this.canvas;
-    
+
             if (prop['chart.grouping'] == 'stacked') {
                 for (var i=0; i<coords2.length; ++i) {
                     if (coords2[i] && coords2[i][0] && coords2[i][0][0]) {
-                        
+
                         var x = coords2[i][0][0];
                         var y = coords2[i][0][1];
                         var w = coords2[i][0][2];
-    
+
                         var arr = [];
                         for (var j=0; j<coords2[i].length; ++j) {
                             arr.push(coords2[i][j][3]);
                         }
                         var h = RGraph.array_sum(arr);
-    
-        
+
+
                         co.save();
-                        
+
                             co.strokeStyle = 'black';
-                        
+
                             // Clip to the rect
                             co.beginPath();
                             co.rect(x, y, w, h);
                             co.clip();
-                
+
                             // Add the shadow
                             co.shadowColor = 'black';
                             co.shadowOffsetX = 0;
                             co.shadowOffsetY = 0;
                             co.shadowBlur = 20;
-                
+
                             co.beginPath();
                             co.rect(x - 3, y - 3, w + 6, h + 100);
                             co.lineWidth = 5;
@@ -2752,35 +2752,35 @@ co.lineTo(
                     }
                 }
             } else {
-    
+
                 for (var i=0; i<coords.length; ++i) {
                     if (coords[i]) {
-    
+
                         var x = coords[i][0];
                         var y = coords[i][1];
                         var w = coords[i][2];
                         var h = coords[i][3];
-                        
+
                         var xaxispos = prop['chart.xaxispos'];
                         var xaxis_ycoord = ((ca.height - this.gutterTop - this.gutterBottom) / 2) + this.gutterTop;
-                        
-                        
+
+
                         co.save();
-                        
+
                             co.strokeStyle = 'black';
-                        
+
                             // Clip to the rect
                             co.beginPath();
                             co.rect(x, y, w, h);
-                            
+
                             co.clip();
-                
+
                             // Add the shadow
                             co.shadowColor = 'black';
                             co.shadowOffsetX = 0;
                             co.shadowOffsetY = 0;
                             co.shadowBlur =  20;
-    
+
                             if (xaxispos == 'top' || (xaxispos == 'center' && (y + h) > xaxis_ycoord)) {
                                 y = y - 100;
                                 h = h + 100;
@@ -2788,7 +2788,7 @@ co.lineTo(
                                 y = y;
                                 h = h + 100;
                             }
-    
+
                             co.beginPath();
                                 co.rect(x - 3, y - 3, w + 6, h + 6);
                                 co.lineWidth = 5;
@@ -2805,7 +2805,7 @@ co.lineTo(
         /**
         * This function handles highlighting an entire data-series for the interactive
         * key
-        * 
+        *
         * @param int index The index of the data series to be highlighted
         */
         this.interactiveKeyHighlight = function (index)
@@ -2818,7 +2818,7 @@ co.lineTo(
                     var y = value[index][1]
                     var w = value[index][2]
                     var h = value[index][3]
-                    
+
                     co.fillStyle = prop['chart.key.interactive.highlight.chart.fill'];
                     co.strokeStyle = prop['chart.key.interactive.highlight.chart.stroke'];
                     co.lineWidth   = 2;
@@ -2833,28 +2833,28 @@ co.lineTo(
 
         /**
         * Using a function to add events makes it easier to facilitate method chaining
-        * 
+        *
         * @param string   type The type of even to add
-        * @param function func 
+        * @param function func
         */
         this.on = function (type, func)
         {
             if (type.substr(0,2) !== 'on') {
                 type = 'on' + type;
               }
-            
+
             if (typeof this[type] !== 'function') {
                 this[type] = func;
             } else {
                 RG.addCustomEventListener(this, type, func);
             }
-    
+
             return this;
         };
-        
-        
-        
-        
+
+
+
+
         /**
         * Draws the above labels
         */
@@ -2892,7 +2892,7 @@ co.lineTo(
 
                     // Alignment for regular, positive bars
                     if (typeof data[i] === 'number' && data[i] >= 0) {
-                        
+
                         var angle  = angle;
                         var halign = (angle ? 'left' : 'center');
                         var valign = angle !== 0 ? 'center' : 'bottom';
@@ -2943,7 +2943,7 @@ co.lineTo(
                             'marker': false,
                             'tag': 'labels.above'
                         });
-                        
+
                         sequentialIndex++;
 
 
@@ -2953,7 +2953,7 @@ co.lineTo(
 
                     // Alignment for grouped bars
                     } else if (typeof data[i] === 'object') {
-                
+
                             for (var j=0,len2=data[i].length; j<len2; j+=1) {
 
                                 var angle  = angle;
@@ -3014,7 +3014,7 @@ co.lineTo(
                         });
 
                         sequentialIndex += data[i].length;
-                    
+
                     /**
                     * Regular numbers but in a stacked grouping
                     */
@@ -3039,7 +3039,7 @@ co.lineTo(
                             'marker': false,
                             'tag': 'labels.above'
                         });
-                        
+
                         sequentialIndex++;
                     }
                 }
@@ -3062,7 +3062,7 @@ co.lineTo(
         /**
         * (new) Bar chart Wave effect. This is a rewrite that should be smoother
         * because it just uses a single loop and not setTimeout
-        * 
+        *
         * @param object   OPTIONAL An object map of options. You specify 'frames' here to give the number of frames in the effect
         * @param function OPTIONAL A function that will be called when the effect is complete
         */
@@ -3088,7 +3088,7 @@ co.lineTo(
 
             for (var i=0,len=obj.data.length; i<len; i+=1) {
                 opt.startFrames[i] = ((opt.frames / 2) / (obj.data.length - 1)) * i;
-                
+
                 if (typeof obj.data[i] === 'object' && obj.data[i]) {
                     opt.counters[i] = [];
                     for (var j=0; j<obj.data[i].length; j++) {
@@ -3113,19 +3113,19 @@ co.lineTo(
                 for (var i=0,len=obj.data.length; i<len; i+=1) {
                         if (frame > opt.startFrames[i]) {
                             if (typeof obj.data[i] === 'number') {
-                                
+
                                 obj.data[i] = ma.min(
                                     ma.abs(original[i]),
                                     ma.abs(original[i] * ( (opt.counters[i]++) / framesperbar))
                                 );
-                                
+
                                 // Make the number negative if the original was
                                 if (original[i] < 0) {
                                     obj.data[i] *= -1;
                                 }
                             } else if (!RG.isNull(obj.data[i])) {
                                 for (var j=0,len2=obj.data[i].length; j<len2; j+=1) {
-                                    
+
                                     obj.data[i][j] = ma.min(
                                         ma.abs(original[i][j]),
                                         ma.abs(original[i][j] * ( (opt.counters[i][j]++) / framesperbar))
@@ -3144,7 +3144,7 @@ co.lineTo(
 
 
                 if (frame >= opt.frames) {
-                    
+
                     if (labelsAbove) {
                         obj.set('labelsAbove', true);
                         RG.redraw();
@@ -3156,7 +3156,7 @@ co.lineTo(
                     RG.Effects.updateCanvas(iterator);
                 }
             }
-            
+
             iterator();
 
             return this;
@@ -3168,7 +3168,7 @@ co.lineTo(
         /**
         * Color Wave effect. This fades in color sequentially like the wave effect
         * makes the bars grow.
-        * 
+        *
         * @param object   OPTIONAL An object map of options. You specify 'frames'
         *                          here to give the number of frames in the effect
         * @param function OPTIONAL A function that will be called when the effect
@@ -3194,7 +3194,7 @@ co.lineTo(
                 frame          = -1,
                 callback       = arguments[1] || function () {},
                 originalColors = RG.arrayClone(obj.properties['chart.colors']);
-                
+
 
 
             for (var i=0,len=originalColors.length; i<len; i+=1) {
@@ -3209,7 +3209,7 @@ co.lineTo(
 
                 for (var i=0,len=colors.length; i<len; i+=1) {
                     if (frame > opt.startFrames[i] && colors[i].match(/^rgba?\(([0-9 ]+),([0-9 ]+),([0-9 ]+)(,([ 0-9.]+)?)\)/)) {
-                        
+
                         // DO NOT USE SPACES!
                         colors[i] = 'rgba({1},{2},{3},{4})'.format(
                             RegExp.$1,
@@ -3230,7 +3230,7 @@ co.lineTo(
                     RG.Effects.updateCanvas(iterator);
                 }
             }
-            
+
             iterator();
 
             return this;
@@ -3241,9 +3241,9 @@ co.lineTo(
 
         /**
         * Grow
-        * 
+        *
         * The Bar chart Grow effect gradually increases the values of the bars
-        * 
+        *
         * @param object       An object of options - eg: {frames: 30}
         * @param function     A function to call when the effect is complete
         */
@@ -3265,7 +3265,7 @@ co.lineTo(
             // Go through the data and change string arguments of the format +/-[0-9]
             // to absolute numbers
             if (RG.isArray(opt.data)) {
-            
+
                 var ymax = 0;
 
                 for (var i=0; i<opt.data.length; ++i) {
@@ -3317,17 +3317,17 @@ co.lineTo(
             if (prop['chart.ymax'] == null) {
 
                 var ymax = 0;
-    
+
                 for (var i=0; i<obj.data.length; ++i) {
                     if (RG.isArray(this.data[i]) && prop['chart.grouping'] === 'stacked') {
                         ymax = ma.max(ymax, ma.abs(RG.arraySum(this.data[i])));
-    
+
                     } else if (RG.isArray(this.data[i]) && prop['chart.grouping'] === 'grouped') {
-                    
+
                         for (var j=0,group=[]; j<this.data[i].length; j++) {
                             group.push(ma.abs(this.data[i][j]));
                         }
-                    
+
                         ymax = ma.max(ymax, ma.abs(RG.arrayMax(group)));
 
                     } else {
@@ -3338,7 +3338,7 @@ co.lineTo(
                 var scale = RG.getScale2(this, {'max':ymax});
                 this.Set('chart.ymax', scale.max);
             }
-            
+
             // You can give a ymax to the grow function
             if (typeof opt.ymax === 'number') {
                 obj.set('ymax', opt.ymax);
@@ -3383,7 +3383,7 @@ co.lineTo(
 
                 if (frame < frames) {
                     frame += 1;
-    
+
                     RG.Effects.updateCanvas(iterator);
 
                 // Call the callback function
@@ -3397,18 +3397,18 @@ co.lineTo(
                     // the constructor - but needs to be redone because new data
                     // has been specified
                     if (RG.isArray(opt.data)) {
-                        
+
                         var linear_data = RG.arrayLinearize(data);
-                
+
                         for (var i=0; i<linear_data.length; ++i) {
                             if (!obj['$' + i]) {
                                 obj['$' + i] = {};
                             }
                         }
                     }
-                    
-                    
-                    
+
+
+
                     obj.data = data;
                     obj.original_data = RG.arrayClone(data);
 
@@ -3423,9 +3423,9 @@ co.lineTo(
                     callback(obj);
                 }
             };
-    
+
             iterator();
-            
+
             return this;
         };
 
@@ -3443,14 +3443,14 @@ co.lineTo(
                      x = 0,
              errorbars = prop['chart.errorbars'],
                 length = 0;
-            
+
 
             // If not capped set the width of the cqap to zero
             if (!prop['chart.errorbars.capped']) {
                 prop['chart.errorbars.capped.width'] = 0;
                 halfwidth = 0;
             }
-            
+
             // Set the linewidth
             co.lineWidth = prop['chart.errorbars.linewidth'];
 
@@ -3458,8 +3458,8 @@ co.lineTo(
 
 
             for (var i=0; i<coords.length; ++i) {
-                
-                
+
+
                 // Default to black
                 color = prop['chart.errorbars.color'] || 'black';
 
@@ -3468,10 +3468,10 @@ co.lineTo(
                 if (errorbars[i] && typeof errorbars[i][3] === 'number') {
                     co.lineWidth = errorbars[i][3];
                 }
-                
+
                 // Set the halfwidth
                 var halfwidth = (errorbars[i]&& typeof errorbars[i][4] === 'number') ? errorbars[i][4] / 2 : default_halfwidth;
-                
+
                 if (!prop['chart.errorbars.capped']) {
                     halfwidth = 0;
                 }
@@ -3480,7 +3480,7 @@ co.lineTo(
 
                 // Calulate the pixel size
                 if (typeof errorbars[i] === 'number') {
-                    
+
                     length = ma.abs(this.getYCoord(errorbars[i]) - this.getYCoord(0));
 
                     if (length) {
@@ -3497,19 +3497,19 @@ co.lineTo(
                             ma.round(coords[i][1] - length),
                             color
                         );
-                    } 
+                    }
                 } else if (typeof errorbars[i] === 'object' && !RG.isNull(errorbars[i])) {
 
                     var positiveLength = ma.abs(this.getYCoord(errorbars[i][0]) - this.getYCoord(0));
-                    
+
                     // Color
                     if (typeof errorbars[i][1] === 'string') {
                         color = errorbars[i][1];
-                    
+
                     } else if (typeof errorbars[i][2] === 'string') {
                         color = errorbars[i][2];
                     }
-                    
+
                     // Cap width
                     halfwidth = typeof errorbars[i][4] === 'number' ? errorbars[i][4] / 2 : default_halfwidth;
 
@@ -3534,7 +3534,7 @@ co.lineTo(
                     }
 
                     if (typeof errorbars[i][1] === 'number') {
-                        
+
                         var negativeLength = ma.abs(this.getYCoord(errorbars[i][1]) - this.getYCoord(0));
 
                         pa2(
@@ -3552,7 +3552,7 @@ co.lineTo(
                         );
                     }
                 }
-                
+
 
                 // Reset the perbar linewidth to the default if the fourth option
                 // in the array was specified specified
@@ -3650,15 +3650,15 @@ co.lineTo(
             });
 
             if (this.objects[i].type == 'line') {
-        
+
                 var obj = this.objects[i];
 
                 /**
                 * Set the line chart hmargin
                 */
                 obj.set('hmargin', ((this.objects[0].canvas.width - this.objects[0].Get('chart.gutter.right') - this.objects[0].Get('chart.gutter.left')) / this.objects[0].data.length) / 2 );
-                
-                
+
+
                 /**
                 * No labels, axes or grid on the Line chart
                 */
@@ -3686,7 +3686,7 @@ co.lineTo(
             {
                 var gutterLeft  = obj.get('gutterLeft');
                 var gutterRight = obj.get('gutterRight');
-            
+
                 obj.set('hmargin', (obj.canvas.width - gutterLeft - gutterRight) / (obj.original_data[0].length * 2));
             }
 
@@ -3710,7 +3710,7 @@ co.lineTo(
         this.objects.push(obj);
     };
 
-    
+
     /**
     * The Draw method goes through all of the objects drawing them (sequentially)
     */

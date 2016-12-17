@@ -1,23 +1,77 @@
 <!doctype html>
 <html>
 <head>
-  <title> // </title>
+  <title> Frequency Analysis of Alphabetical Character </title>
+  <style>
+  @import url('https://fonts.googleapis.com/css?family=Arapey');
+  body, h1{
+    margin: 0 auto;
+    color: #eeeeee;
+    text-align: justify;
+    line-height: 28px;
+    letter-spacing: 0.7px;
+    font-family: 'Arapey', serif, Times;
+    background-color: #f9f9f9;
+  }
+  .context{
+    margin: 0px;
+    background-color: #052623;
+    font-size: 17px;
+    padding: 30px 120px 30px 120px;
+  }
+  .input{
+    font-size: 15px;
+    margin-top: 10px;
+    letter-spacing: 0.7px;
+    font-family: 'Arapey', serif, Times;
+  }
+  .heading{
+    margin: 10px 0px 30px 0px;
+    background-color: #052623;
+  }
+  .buttons{
+    text-align: center;
+    margin: 10px 0px 50px 0px;
+  }
+  .button1,.button2,.button3{
+    font-size: 14px;
+    letter-spacing: 0.2px;
+    font-family: 'Arapey', serif, Times;
+  }
+  .canvas{
+    margin: 70px 0px 40px -35px;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+  }
+  </style>
   <script src="RGraph/libraries/RGraph.common.core.js"></script>
   <script src="RGraph/libraries/RGraph.common.dynamic.js"></script>
   <script src="RGraph/libraries/RGraph.common.tooltips.js"></script>
   <script src="RGraph/libraries/RGraph.bar.js"></script>
-  <script src="source.js" type="text/javascript"></script>
+  <script src="program.js" type="text/javascript"></script>
 </head>
 <body>
-  <h1> // </h1>
-  <input type="file" id="fileinput">
-  <p id="content"> hi</p>
-  <p id="content1"> hihi </p>
-  <button id="drawButton" onclick="drawButton()"> Unsorted Data </button>
-  <button onclick="sortButton()"> Sorted Data </button>
-  <button onclick="RGraph.Reset(document.getElementById('canvas'))">Reset Canvas</button>
-  <div style="margin: 12px; margin-bottom: 40px; margin-top: 40px; display: inline-block">
-    <canvas id="canvas" width="1200" height="490"></canvas>
+
+  <div class="context">
+    <h1 class="heading"> CP2407 Information Visualisation </h1>
+    <p> This is a web page intergrated with the function of frequency analysis of text written in JavaScript,
+      which you can pick a file from your computer and look at the number of occurrence (frequency)
+      of all alphabetical character (ignoring cases) within the context. The graph below will display the
+      number of occurrence once the file is loaded successfully. You are also allow to sort the chart
+      in descending order and clear the graph by pressing the buttons below the graph.
+    </p>
+    <input class="input" type="file" id="fileinput">
+  </div>
+
+  <div class="canvas">
+    <canvas id="canvas" width="1100" height="480"></canvas>
+  </div>
+
+  <div class="buttons">
+    <button class="button1" id="drawButton" onclick="drawButton()"> Unsorted Data </button>
+    <button class="button2" onclick="sortButton()"> Sort Data  </button>
+    <button class="button3" onclick="RGraph.Reset(document.getElementById('canvas'))">Reset Canvas</button>
   </div>
 </body>
 </html>
