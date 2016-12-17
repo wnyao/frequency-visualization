@@ -1,3 +1,13 @@
+/**
+ * Author: Kong Wen yao
+ * Date: December 17, 2016
+ *
+ * This is a simple JaveSctipt program containing functions for frequency Analysis of text program,
+ * which allows user to choose a file from their computer, and then produces a histogram showing the
+ * number of occurrences of all alphabetic characters (ignoring case) of the text in the file they
+ * chose. This program is done using the RGraph library ( http://www.rgraph.net/ ) for visualisation.
+ */
+
 "use strict";
 var data = {};
 var dataNumbers = [];
