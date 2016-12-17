@@ -11,8 +11,11 @@ window.onload = function(){
 };
 
 function drawBar (data, labels){
-/* This function will get two arrays as parameters, clear the canvase, and draw a bar graph with the parameters using RGraph. */
+/* This function will get two arrays as parameters, clear the canvase, and draw a bar graph with the
+ * parameters using RGraph.
+ */
   RGraph.Reset(document.getElementById('canvas')); //Reset canvas to avoid overlapping
+  var count = ylabelsCount(); //Use for ylabelsCount
     var bar = new RGraph.Bar({
         id: 'canvas',
         data: data,
@@ -37,10 +40,21 @@ function drawBar (data, labels){
             titleXaxisY: 510,
             titleYaxis: "Frequency",
             titleYaxisX: 10,
-            ylabelsCount: 10,
+            ylabelsCount: count,
             labelsAboveSize: 10,
         }
     }).draw()
+}
+
+function ylabelsCount(){
+  /* This function is designed specifically for ylabelsCount which return the number of y-axis labels
+   * count based on the number of data used by the graph.
+   */
+  if(dataNumbers.length <= 5){
+    return 5;
+  } else {
+    return 10;
+  }
 }
 
 function readFile(file){
