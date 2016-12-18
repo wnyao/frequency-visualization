@@ -15,12 +15,12 @@ var dataLabels = [];
 var sortedDatalabels = [];
 var smallLetters = getAlphabets('a', 'z');
 
-window.onload = function(){
+window.onload = function() {
   document.getElementById('fileinput').addEventListener('change', readFile);
   document.getElementById('canvas').innerHTML = drawBar(dataNumbers, smallLetters); //Display empty chart while webpage onload
 };
 
-function drawBar (data, labels){
+function drawBar (data, labels) {
 /* This function will get two arrays as parameters, clear the canvase, and draw a bar graph with the
  * parameters using RGraph.
  */
@@ -56,18 +56,18 @@ function drawBar (data, labels){
     }).draw()
 }
 
-function ylabelsCount(){
-  /* This function is designed specifically for ylabelsCount which return the number of y-axis labels
-   * count based on the number of data used by the graph.
+function ylabelsCount() {
+  /* This function is designed specifically for ylabelsCount which return the number of count for
+   * y-axis labels based on the number of data used by the graph.
    */
-  if(dataNumbers.length <= 5){
+  if(dataNumbers.length <= 5) {
     return 5;
   } else {
     return 10;
   }
 }
 
-function readFile(file){
+function readFile(file) {
   /* This function will first read file and alert user whether file input is loaded successfully. While
    * reader onload after file input successfully, it will count the occurrence of each letter within
    * the file content and store it within a dictionary and arrays, which will be used to display graph.
@@ -76,7 +76,7 @@ function readFile(file){
   var reader = new FileReader();
 
   if (f){
-    reader.onload = function(e){
+    reader.onload = function(e) {
       RGraph.Reset(document.getElementById('canvas')); //Reset canvas to avoid overlapping
       var content = e.target.result; //Text file content
       dataNumbers = [];  //Reset array
@@ -161,7 +161,7 @@ function sort(dict) {
    * before sorted out the array in descending order and return it.
    */
   var sortedValues1 = [], sortedValues2 = [];
-  for (var i = 0; i < smallLetters.length ; i++){
+  for (var i = 0; i < smallLetters.length ; i++) {
       sortedValues1.push(dict[smallLetters[i]]); //Store dictionary values into an array
   }
   sortedValues1.sort(function(a, b){return b-a}); //Sort number in descending order
