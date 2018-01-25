@@ -1,8 +1,13 @@
 # CP2407_A1
-CP2407-Information Visualisation (Assignment 1)
-
-This is a simple web page, which allows a user to choose a file from their computer, and then produces a histogram showing the number of 
-occurrences of all alphabetic characters (ignoring case) of the text in the file they chose. This program is done using the RGraph library 
+### University:
+* James Cook University
+### Course:
+* CP2407Information Visualisation
+### Author:
+* wnyao
+### Project Description:
+This project is a simple web page visualisation that designed to allow a user in choosing a file from their computer and then produces histogram showing the number of 
+occurrences on all alphabetic characters (ignoring case) within the input file. This program is done with support of RGraph library 
 ( http://www.rgraph.net/ ) for visualisation.
 
 The page will first loaded with a button which will allow the user to select a file from a standard file selector dialog box. Once the user 
