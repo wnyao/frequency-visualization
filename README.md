@@ -2,7 +2,7 @@
 ### University:
 * James Cook University
 ### Course:
-* CP2407Information Visualisation
+* CP2407 Information Visualisation
 ### Author:
 * wnyao
 ### Project Description:
