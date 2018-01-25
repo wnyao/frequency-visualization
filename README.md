@@ -1,4 +1,4 @@
-# CP2407_A1
+# Information Visualization on Frequency of Alphabets 
 ### University:
 * James Cook University
 ### Course:
