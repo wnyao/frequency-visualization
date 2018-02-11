@@ -8,6 +8,7 @@
 ### Project Description:
 ![Sample](https://github.com/wnyao/information_visualization/blob/master/sample_image.png)
 
+
 This project is a simple web page visualisation that designed to allow a user in choosing a file from their computer and then produces histogram showing the number of 
 occurrences on all alphabetical characters (ignoring case) within the input file. This program is done with support of RGraph library 
 ( http://www.rgraph.net/ ) for visualisation.
