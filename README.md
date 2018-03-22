@@ -6,7 +6,7 @@
 ### Author:
 * wnyao
 ### Project Description:
-![Sample](https://github.com/wnyao/information_visualization/blob/master/sample_image.png)
+![Sample](https://github.com/wnyao/information_visualization/blob/master/image_readme/sample_image.png)
 
 
 This project is a information visualisation that designed to allow user in inputting a file from their computer and generate a histogram showing the number of occurrences on all alphabetical characters (ignoring case) within the input file. This program is done with support of RGraph library ( http://www.rgraph.net/ ) for visualisation.
