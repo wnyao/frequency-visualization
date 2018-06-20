@@ -42,7 +42,7 @@ function drawBar (data, labels) {
             textSize: 13.5,
             labelsAbove: true,
             labelsAboveOffset: 2,
-            title: "Frequency Analysis of Alphabetical Characters",
+            title: "Frequency Analysis on Alphabetical Characters",
             titleSize: 15,
             titleY: -22,
             titleBold: true,
