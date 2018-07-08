@@ -3,5 +3,7 @@ Frequency visualization on alphabetical characters is intergrated with the funct
 
 ### [Give it a try](https://wnyao.github.io/frequency_visualization/)
 
+---
+
 ### Preview:
 ![Sample](https://github.com/wnyao/frequency_visualization/blob/master/screenshot/screenshot.jpg)
