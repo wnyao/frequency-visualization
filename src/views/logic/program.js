@@ -41,7 +41,7 @@ Program.prototype.registerFileInput = function () {
   const fileInput = document.getElementById("fileInput");
   fileInput.addEventListener(
     "change",
-    (e) => {
+    async (e) => {
       const { files } = e.currentTarget;
       if (!files || !files.length) {
         alert("No file has uploaded.");
@@ -49,23 +49,48 @@ Program.prototype.registerFileInput = function () {
         return;
       }
 
-      // store file
       const file = files[0] || {};
-
-      // read file
       const reader = new FileReader();
-      reader.onload = (e) => {
-        const { result } = e.currentTarget;
-        const occurrence = this.getOccurrence(result);
 
+      reader.onload = async (e) => {
+        let { result } = e.currentTarget;
+        console.log("result: ", result);
+
+        // pdf handler
+        if (file.type.includes("pdf")) {
+          const sentences = await this.readPDF(result);
+          result = sentences.join(" ");
+        }
+
+        const occurrence = this.getOccurrence(result);
         this.occurrence = occurrence;
         this.fillData(file, result);
         this.drawChart(occurrence, this.chartType || "line");
       };
-      reader.readAsText(file, "UTF-8");
+
+      reader.readAsArrayBuffer(file);
     },
     false
   );
+};
+
+Program.prototype.readPDF = async function (result) {
+  // worker
+  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`;
+
+  // REFER: https://mozilla.github.io/pdf.js/examples/index.html#interactive-examples
+  const pdf = await pdfjsLib.getDocument(result).promise;
+  const { numPages } = pdf;
+
+  // get sentences
+  let sentences = [];
+  for (let i = 1; i <= numPages; i++) {
+    const page = await pdf.getPage(i);
+    const { items } = await page.getTextContent();
+    sentences = sentences.concat(items.map((x) => x.str));
+  }
+
+  return sentences;
 };
 
 Program.prototype.getOccurrence = function (string) {
