@@ -33,36 +33,39 @@ Program.prototype.registerSelectInput = function () {
   const chartTypeInput = document.getElementById("chartType");
   chartTypeInput.addEventListener("change", (e) => {
     const { value } = e.currentTarget;
-    this.chartType = value;
-    this.drawChart(this.occurrence || {});
+    this.drawChart(this.occurrence, value);
   });
 };
 
 Program.prototype.registerFileInput = function () {
   const fileInput = document.getElementById("fileInput");
-  fileInput.addEventListener("change", (e) => {
-    const { files } = e.currentTarget;
-    if (!files || !files.length) {
-      alert("No file has uploaded.");
-      this.file = {};
-      return;
-    }
+  fileInput.addEventListener(
+    "change",
+    (e) => {
+      const { files } = e.currentTarget;
+      if (!files || !files.length) {
+        alert("No file has uploaded.");
+        this.file = {};
+        return;
+      }
 
-    // store file
-    const file = files[0] || {};
+      // store file
+      const file = files[0] || {};
 
-    // read file
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const { result } = e.currentTarget;
-      const occurrence = this.getOccurrence(result);
+      // read file
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const { result } = e.currentTarget;
+        const occurrence = this.getOccurrence(result);
 
-      this.occurrence = occurrence;
-      this.fillData(file, result);
-      this.drawChart(occurrence);
-    };
-    reader.readAsText(file, "UTF-8");
-  });
+        this.occurrence = occurrence;
+        this.fillData(file, result);
+        this.drawChart(occurrence, this.chartType || "line");
+      };
+      reader.readAsText(file, "UTF-8");
+    },
+    false
+  );
 };
 
 Program.prototype.getOccurrence = function (string) {
@@ -89,7 +92,7 @@ Program.prototype.fillData = function (file, result) {
   wordCount.innerHTML = `${result.length} letters in total`;
 };
 
-Program.prototype.drawChart = async function (occurrence) {
+Program.prototype.drawChart = async function (occurrence, type) {
   if (!occurrence) return;
 
   // parsed data
@@ -102,24 +105,43 @@ Program.prototype.drawChart = async function (occurrence) {
     };
   });
 
-  // create chart
-  const ctx = document.getElementById("canvas").getContext("2d");
+  // remove old canvas
+  const oldCanvas = document.getElementsByClassName("canvas")[0];
+  oldCanvas && oldCanvas.remove();
+
+  // create canvas
+  let canvas = document.createElement("canvas");
+  let ctx = canvas.getContext("2d");
+  canvas.className = "canvas";
+
+  // append canvas
+  const chart = document.getElementsByClassName("chart")[0];
+  chart.appendChild(canvas);
+
   new Chart(ctx, {
-    type: this.chartType || "line",
+    type: type || "line",
     plugins: [ChartDataLabels],
     data: {
       labels: data.map((x) => x.key),
       datasets: [
         {
           borderWidth: 2,
-          data: data.map((x) => x.value),
-          backgroundColor: "rgba(73, 227, 212, 0.5)",
+          data:
+            type !== "bubble"
+              ? data.map((x) => x.value)
+              : data.map((x) => ({
+                  x: x.value,
+                  y: x.value,
+                  r: Math.abs(x.value) / 5,
+                })),
+          backgroundColor: "rgba(31, 128, 119, 0.5)",
           borderColor: "#1f8077",
         },
       ],
     },
     // Configuration options go here
     options: {
+      maintainAspectRatio: true,
       layout: {
         padding: {
           left: 50,
@@ -147,7 +169,7 @@ Program.prototype.drawChart = async function (occurrence) {
         callbacks: {
           label: function (tooltipItem, chart) {
             const { key, value } = data[tooltipItem.index];
-            return value ? `${value} total of letter "${key}"` : "Not found";
+            return value ? `Total of ${value} letter "${key}"` : "Not found";
           },
           labelColor: function (tooltipItem, chart) {
             const { color } = data[tooltipItem.index];
@@ -177,6 +199,11 @@ Program.prototype.drawChart = async function (occurrence) {
           font: {
             weight: "bold",
             size: "14",
+          },
+          formatter: function (value, context) {
+            return type !== "bubble"
+              ? value
+              : context.chart.data.labels[context.dataIndex];
           },
         },
       },
