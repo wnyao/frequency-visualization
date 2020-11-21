@@ -1,0 +1,57 @@
+@import url("https://fonts.googleapis.com/css?family=Arapey");
+
+div {
+  animation: fade-in 0.3s forwards;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+body,
+h1 {
+  margin: 0 auto;
+  color: #eeeeee;
+  text-align: justify;
+  line-height: 28px;
+  letter-spacing: 0.7px;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial,
+    sans-serif, Apple Color Emoji, Segoe UI Emoji;
+  background-color: #f8f8f8;
+}
+
+.context {
+  margin: 0px;
+  background-color: #052623;
+  font-size: 17px;
+  padding: 80px 120px;
+}
+
+.input {
+  font-size: 15px;
+  margin-top: 15px;
+  letter-spacing: 0.7px;
+  font-family: "Arapey", serif, Times;
+}
+
+.heading {
+  margin: 10px 0px 30px 0px;
+  background-color: #052623;
+  color: #fbfbfb;
+}
+
+#canvas {
+  margin: 40px 10px;
+}
+
+.subContent {
+  text-align: center;
+  margin: 10px 0px 50px 27px;
+  color: black;
+}
