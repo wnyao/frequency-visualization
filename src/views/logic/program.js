@@ -27,6 +27,7 @@ Utilities.prototype.count = function (content, letter) {
 function Program() {
   this.display = new Display();
   this.display.drawChart({});
+
   this.registerFileInput();
   this.registerSelectInput();
 }
@@ -44,6 +45,9 @@ Program.prototype.registerFileInput = function () {
   fileInput.addEventListener(
     "change",
     async (e) => {
+      // reset ui
+      this.display.reset();
+
       const { files } = e.currentTarget;
       if (!files || !files.length) {
         alert("No file has uploaded.");
@@ -52,7 +56,6 @@ Program.prototype.registerFileInput = function () {
 
       this.file = files[0] || {};
       const reader = new FileReader();
-
       reader.onload = async (e) => {
         let { result } = e.currentTarget;
         console.log("result: ", result);
@@ -131,6 +134,23 @@ Program.prototype.getOccurrence = function (string) {
 
 function Display() {}
 
+Display.prototype.reset = function () {
+  const chartTypeInput = document.getElementById("chartType");
+  chartTypeInput.value = "line";
+
+  const ul = document.getElementsByClassName("statsParent")[0];
+  ul.innerHTML = "";
+
+  const progress = document.getElementsByClassName("progress")[0];
+  progress.style.display = "none";
+
+  const bar = document.getElementsByClassName("bar")[0];
+  bar.style.width = `0%`;
+
+  const label = document.getElementsByClassName("label")[0];
+  label.innerHTML = `0%`;
+};
+
 Display.prototype.drawData = function (result, file) {
   const data = {
     Filename: file.name,
@@ -202,7 +222,7 @@ Display.prototype.drawChart = async function (occurrence, type, file) {
               : data.map((x) => ({
                   x: x.value,
                   y: x.value,
-                  r: Math.abs(x.value) / 5,
+                  r: Math.abs(x.value) / 2,
                 })),
           backgroundColor: "rgba(31, 128, 119, 0.5)",
           borderColor: "#1f8077",
