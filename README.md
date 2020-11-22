@@ -1,8 +1,8 @@
 # Frequency of Letters
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/0e27a68a-a5cb-4adc-85a6-01bcdef280b5/deploy-status)](https://app.netlify.com/sites/frequency-visualisation/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/883e5eb0-a88c-4ff9-a034-a9320593ab20/deploy-status)](https://app.netlify.com/sites/frequency-visualisation/deploys)
 
-Check the preview [here](https://frequency-visualisation.netlify.com)
+Check the preview [here](https://frequency-visualisation.netlify.app)
 
 ![Sample](./screenshot/screenshot.png)
 
