@@ -4,7 +4,7 @@
 
 Check the preview [here](https://frequency-visualisation.netlify.com)
 
-![Sample](https://github.com/wnyao/frequency_visualization/blob/master/screenshot/screenshot.jpg)
+![Sample](./screenshot/screenshot.png)
 
 ## Description
 
