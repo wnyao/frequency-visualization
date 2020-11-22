@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const exphbs = require("express-handlebars");
 const serverless = require("serverless-http");
@@ -25,6 +26,10 @@ app.set("views", path.join(__dirname, "views"));
 // routes
 app.use("/", home);
 
-// app.listen(PORT, () => console.log(`Server listening on port: ${PORT}`));
+if (process.env.NODE_ENV === "dev") {
+  app.listen(PORT, () => console.log(`Server listening on port: ${PORT}`));
+  return;
+}
+
 module.exports = app;
 module.exports.handler = serverless(app);
