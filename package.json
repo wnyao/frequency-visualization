@@ -13,7 +13,7 @@
     "url": "https://github.com/wnyao/frequency_visualization/issues"
   },
   "scripts": {
-    "build": "export NODE_ENV=prod netlify-lambda build express",
+    "build": "export NODE_ENV=prod && netlify-lambda build express",
     "start": "export NODE_ENV=dev && node src/index.js",
     "dev": "export NODE_ENV=dev && nodemon src/index.js"
   },
