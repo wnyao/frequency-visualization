@@ -27,9 +27,10 @@ app.set("views", path.join(__dirname, "views"));
 app.use("/", home);
 
 if (process.env.NODE_ENV === "dev") {
-  app.listen(PORT, () => console.log(`Server listening on port: ${PORT}`));
-  return;
+  app.listen(PORT, () =>
+    console.log(`Server listening http://localhost:${PORT}`)
+  );
+} else {
+  module.exports = app;
+  module.exports.handler = serverless(app);
 }
-
-module.exports = app;
-module.exports.handler = serverless(app);
