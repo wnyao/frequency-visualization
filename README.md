@@ -13,6 +13,7 @@ Frequency visualization on alphabetical characters is intergrated with the funct
 ## Reference
 
 - [Express handlebars](https://github.com/foundersandcoders/express-handlebars-workshop)
+- [Read Files](https://web.dev/read-files/)
 
 ## Author
 

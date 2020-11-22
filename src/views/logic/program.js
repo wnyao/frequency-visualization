@@ -25,6 +25,8 @@ Utilities.prototype.count = function (content, letter) {
 // Programs -------------------------------------------------------------------
 
 function Program() {
+  this.display = new Display();
+  this.display.drawChart({});
   this.registerFileInput();
   this.registerSelectInput();
 }
@@ -33,7 +35,7 @@ Program.prototype.registerSelectInput = function () {
   const chartTypeInput = document.getElementById("chartType");
   chartTypeInput.addEventListener("change", (e) => {
     const { value } = e.currentTarget;
-    this.drawChart(this.occurrence, value);
+    this.display.drawChart(this.occurrence, value, this.file);
   });
 };
 
@@ -45,37 +47,57 @@ Program.prototype.registerFileInput = function () {
       const { files } = e.currentTarget;
       if (!files || !files.length) {
         alert("No file has uploaded.");
-        this.file = {};
         return;
       }
 
-      const file = files[0] || {};
+      this.file = files[0] || {};
       const reader = new FileReader();
 
       reader.onload = async (e) => {
         let { result } = e.currentTarget;
         console.log("result: ", result);
+        console.log("this.file: ", this.file);
+
+        // rtf handler
+        if (this.file.type.includes("rtf")) {
+          const doc = new RTFJS.Document(result);
+          const htmlElement = await doc.render();
+          result = htmlElement[0].innerText;
+        }
+
+        // docs handler
+        if (this.file.type.includes("wordprocessingml")) {
+          result = (await mammoth.extractRawText({ arrayBuffer: result }))
+            .value;
+        }
 
         // pdf handler
-        if (file.type.includes("pdf")) {
+        if (this.file.type.includes("pdf")) {
           const sentences = await this.readPDF(result);
           result = sentences.join(" ");
         }
 
+        if (typeof result !== "string") return;
         const occurrence = this.getOccurrence(result);
         this.occurrence = occurrence;
-        this.fillData(file, result);
-        this.drawChart(occurrence, this.chartType || "line");
+        this.display.drawData(result, this.file);
+        this.display.drawChart(occurrence, this.chartType || "line", this.file);
       };
 
-      reader.readAsArrayBuffer(file);
+      reader.onprogress = (e) => {
+        const { loaded, total } = e;
+        if (!loaded || !total) return;
+        const percent = Math.round((loaded / total) * 100);
+        this.display.drawProgress(percent);
+      };
+
+      reader.readAsArrayBuffer(this.file);
     },
     false
   );
 };
 
 Program.prototype.readPDF = async function (result) {
-  // worker
   pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`;
 
   // REFER: https://mozilla.github.io/pdf.js/examples/index.html#interactive-examples
@@ -105,19 +127,42 @@ Program.prototype.getOccurrence = function (string) {
   return occurrence;
 };
 
-Program.prototype.fillData = function (file, result) {
-  this.wordCount = result.length;
-  this.file = {
-    filename: file.name,
-    size: file.size,
-    type: file.type,
+// Display -------------------------------------------------------------------
+
+function Display() {}
+
+Display.prototype.drawData = function (result, file) {
+  const data = {
+    Filename: file.name,
+    Size: `${file.size} bytes`,
+    "Word Count": `${result.split(" ").length} word count`,
+    "Letter Count": `${result.length} letter count`,
   };
 
-  const wordCount = document.getElementsByClassName("wordCount")[0];
-  wordCount.innerHTML = `${result.length} letters in total`;
+  const stats = document.getElementsByClassName("stats")[0];
+  stats.style.display = "flex";
+
+  const ul = document.getElementsByClassName("statsParent")[0];
+  for (let i in data) {
+    const li = document.createElement("li");
+    li.innerHTML = data[i];
+    li.className = "smallText";
+    ul.appendChild(li);
+  }
 };
 
-Program.prototype.drawChart = async function (occurrence, type) {
+Display.prototype.drawProgress = function (percent) {
+  const progress = document.getElementsByClassName("progress")[0];
+  progress.style.display = "block";
+
+  const bar = document.getElementsByClassName("bar")[0];
+  bar.style.width = `${percent}%`;
+
+  const label = document.getElementsByClassName("label")[0];
+  label.innerHTML = `${percent}%`;
+};
+
+Display.prototype.drawChart = async function (occurrence, type, file) {
   if (!occurrence) return;
 
   // parsed data
@@ -180,9 +225,7 @@ Program.prototype.drawChart = async function (occurrence, type) {
       },
       title: {
         display: true,
-        text: `Frequency of Letters ${
-          this.file ? `in ${this.file.filename}` : ""
-        }`,
+        text: `Frequency of Letters ${file ? `in ${file.name}` : ""}`,
       },
       element: {
         point: {
@@ -237,8 +280,7 @@ Program.prototype.drawChart = async function (occurrence, type) {
 };
 
 const main = () => {
-  const program = new Program();
-  program.drawChart({});
+  new Program();
 };
 
 main();
